@@ -1,23 +1,26 @@
 <template>
+    <HeaderView />
     <Transition class="animate__animated animate__fadeIn">
         <div>
-            <HeaderView />
             <SidebarView />
             <main id="main" class="main" v-if="this.$userStore.isLoggedIn">
 
                 <div class="pagetitle">
-                    <h1>Profile</h1>
+                    <h1>My Profile</h1>
                 </div><!-- End Page Title -->
 
                 <section class="section profile">
                     <div class="row">
                         <div class="col-xl-4">
 
-                            <div class="card">
+                            <div class="card border-3 border-top border-primary">
                                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                                    <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo" alt="Profile" class="rounded-circle" v-if="this.$userStore.isLoggedIn && this.$userStore.user.user_photo.includes('assets/profile')">
-                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo" alt="Profile" class="rounded-circle" v-else-if="this.$userStore.isLoggedIn">
-                                    <h2>{{ this.$userStore.user.alias_name }}</h2>
+                                    <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
+                                        alt="Profile" class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
+                                        v-if="this.$userStore.isLoggedIn && this.$userStore.user.user_photo.includes('assets/profile')">
+                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
+                                        alt="Profile" class="rounded-circle float-start me-3 p-1 border border-3 border-primary" v-else-if="this.$userStore.isLoggedIn">
+                                    <h2>{{ this.$userStore.user.user_alias_name }}</h2>
                                     <h3>{{ this.$userStore.user.team_name }}</h3>
                                     <ul class="list-group list-group-flush bg-transparent w-100 mt-3">
                                         <li
@@ -39,25 +42,32 @@
 
                             <div class="card">
                                 <div class="card-body pt-3">
+
                                     <!-- Bordered Tabs -->
                                     <ul class="nav nav-tabs nav-tabs-bordered">
 
                                         <li class="nav-item">
-                                            <button class="nav-link  bg-transparent active" data-bs-toggle="tab"
-                                                data-bs-target="#profile-overview" @click="updateData">Overview</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent active" data-bs-toggle="tab"
+                                                data-bs-target="#profile-overview"><i class="ri-profile-fill me-2"></i> Overview</button>
                                         </li>
 
                                         <li class="nav-item">
-                                            <button class="nav-link bg-transparent" data-bs-toggle="tab"
-                                                data-bs-target="#profile-edit">Edit Profile</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent" data-bs-toggle="tab"
+                                                data-bs-target="#profile-edit"><i class="ri-edit-box-fill me-2"></i> Edit Profile</button>
                                         </li>
 
                                         <li class="nav-item">
-                                            <button class="nav-link bg-transparent" data-bs-toggle="tab"
-                                                data-bs-target="#profile-settings">Teammates</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent" data-bs-toggle="tab" 
+                                                data-bs-target="#profile-teammates" @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <button class="nav-link d-flex align-items-center bg-transparent" data-bs-toggle="tab" 
+                                                data-bs-target="#profile-kudos"><i class="ri-thumb-up-fill me-2"></i> Kudos</button>
                                         </li>
 
                                     </ul>
+
                                     <div class="tab-content pt-2">
 
                                         <div class="tab-pane fade show active profile-overview" id="profile-overview">
@@ -113,13 +123,17 @@
                                         <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                             <!-- Profile Edit Form -->
-                                            <form>
+                                            <div>
                                                 <div class="row mb-3">
                                                     <label for="profileImage"
                                                         class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                     <div class="col-md-8 col-lg-9">
-                                                        <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo" alt="Profile" v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
-                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo" alt="Profile" class="rounded-circle" v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
+                                                        <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
+                                                            alt="Profile"
+                                                            v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
+                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
+                                                            alt="Profile" class="rounded-circle"
+                                                            v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
                                                         <img :src="this.imageUrl" alt="Profile" v-else>
                                                         <div class="pt-2">
                                                             <input type="file" id="openFile" hidden @change="onImageChange">
@@ -229,19 +243,33 @@
                                                 </div>
 
                                                 <div class="text-end">
-                                                    <a href="#" type="submit" class="btn btn-primary"
-                                                        @click="updateProfile">Save Changes</a>
+                                                    <button type="submit" class="btn btn-primary" @click="updateProfile"
+                                                        :disabled="this.loading">
+                                                        <span v-if="!this.loading">Save Changes</span>
+                                                        <span class="spinner-border spinner-border-sm me-2" role="status"
+                                                            aria-hidden="true" v-if="this.loading"></span>
+                                                        <span v-if="this.loading">Saving Changes</span>
+                                                    </button>
                                                 </div>
-                                            </form><!-- End Profile Edit Form -->
+                                            </div><!-- End Profile Edit Form -->
 
                                         </div>
 
-                                        <div class="tab-pane fade pt-3" id="profile-settings">
+                                        <div class="tab-pane fade pt-3" id="profile-teammates">
 
-                                            <div class="container text-center">
-                                                <div class="row align-items-start">
-                                                    <div class="col" v-for="(teammates, index) in this.teammates" :key="index">
-                                                    {{ teammates.team_name }}
+                                            <div class="profile-teammates container">
+                                                <div class="row mb-5" v-for="(team, teamName) in groupedUsers" :key="teamName">
+                                                    <h2 class="p-3 mt-0 mb-3 bg-primary text-white fs-6 fw-bold d-flex align-items-center"><i class="ri-group-fill fs-4 me-3"></i> {{ teamName }}</h2>
+                                                    <div class="col-4 p-3 d-flex align-items-center" v-for="user in team" :key="user.user_full_name" @click="viewProfile(user)">
+                                                        <img :src="`https://office.orchestra.tools/` + user.user_photo"
+                                                            alt="Profile"
+                                                            class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
+                                                            v-if="user.user_photo.includes('assets/profile')">
+                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
+                                                            alt="Profile"
+                                                            class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
+                                                            v-else>
+                                                        <h6 class="m-0">{{ user.user_full_name }}</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -266,7 +294,7 @@
 import HeaderView from '@/components/HeaderView.vue';
 import SidebarView from '@/components/SidebarView.vue';
 import { useUserStore } from '@/store';
-import { lStore, delay, showAlert } from '@/controller';
+import { lStore, delay, showAlert, scrollToTop } from '@/controller';
 import axios from 'axios';
 
 export default {
@@ -279,7 +307,8 @@ export default {
             chosenFile: [],
             imageUrl: null,
             selectedImage: null,
-            teammates: {}
+            users: {},
+            groupedUsers: {}
         }
     },
     mounted() {
@@ -293,14 +322,12 @@ export default {
         this.user.profilepicture = this.selectedImage;
         console.log(this.user);
 
-        axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${this.$userStore.user.team_id}`).then((res) => {
-            if (res.data.result == null) return;
-            this.teammates = res.data.result;
-            console.log(this.teammates);
-        });
+        this.loadTeammates();
     },
     methods: {
         updateProfile() {
+            this.loading = true;
+
             if (this.selectedImage == null) {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/Usercontroller/editUser?userid=${this.$userStore.user.user_id}&password=${this.user.password}&confirmpassword=${this.user.confirm_password}&zimbraemail=${this.user.zimbra_email}&gmailemail=${this.user.gmail_email}&skypename=${this.user.skype_name}&webmail=${this.user.emailer_email}&emaileremail=${this.user.emailer_email}&contactnumber=${this.user.contact_number}`).then((res) => {
                     console.log(res);
@@ -310,21 +337,27 @@ export default {
                             userStore.setUser(res.data.result);
                             lStore.setObject('user_information', res.data.result);
                         }).then(() => {
-                            this.user.password = '';
-                            this.user.confirm_password = '';
-                            showAlert('alert-success', 'Updated Successful!', 'bi-check-circle-fill');
+                            delay(0)
+                                .then(() => showAlert('alert-success', 'Updated Successful!', 'bi-check-circle-fill'))
+                                .then(() => this.loading = false)
+                                .then(() => {
+                                    this.user.password = '';
+                                    this.user.confirm_password = '';
+                                    scrollToTop();
+                                });
                         });
                     } else {
-                        showAlert('alert-danger', res.data.msg, 'bi-exclamation-circle-fill');
+                        delay(0)
+                            .then(() => showAlert('alert-danger', res.data.msg, 'bi-exclamation-circle-fill'))
+                            .then(() => this.loading = false);
                     }
                 });
-            }
-            else {
+            } else {
                 let file = this.selectedImage;
                 let formData = new FormData();
-                formData.append('file',file);
-                formData.append('userid',this.$userStore.user.user_id);
-                axios.post('http://ns.proweaver.host/nsorchestra/api/Usercontroller/uploadfile?' + '&type=' + this.fileType(file.name),formData).then(res => {
+                formData.append('file', file);
+                formData.append('userid', this.$userStore.user.user_id);
+                axios.post('http://ns.proweaver.host/nsorchestra/api/Usercontroller/uploadfile?' + '&type=' + this.fileType(file.name), formData).then(res => {
                     if (res.data.success === false) alert(res.data.msg);
                     console.log(res);
                 }).then(() => {
@@ -336,15 +369,22 @@ export default {
                                 userStore.setUser(res.data.result);
                                 lStore.setObject('user_information', res.data.result);
                             }).then(() => {
-                                this.user.password = '';
-                                this.user.confirm_password = '';
-                                showAlert('alert-success', 'Updated Successful!', 'bi-check-circle-fill');
+                                delay(0)
+                                    .then(() => showAlert('alert-success', 'Updated Successful!', 'bi-check-circle-fill'))
+                                    .then(() => this.loading = false)
+                                    .then(() => {
+                                        this.user.password = '';
+                                        this.user.confirm_password = '';
+                                        scrollToTop();
+                                    });
                             });
                         } else {
-                            showAlert('alert-danger', res.data.msg, 'bi-exclamation-circle-fill');
+                            delay(0)
+                                .then(() => showAlert('alert-danger', res.data.msg, 'bi-exclamation-circle-fill'))
+                                .then(() => this.loading = false);
                         }
                     });
-                });                
+                });
             }
         },
         onImageChange(e) {
@@ -365,15 +405,70 @@ export default {
             if (doc.includes(ext)) return 'document';
             return '';
         },
+        loadTeammates() {
+            return new Promise((resolve, reject) => {
+                axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${this.$userStore.user.team_id}`)
+                    .then((res) => {
+                        if (res.data.result == null) {
+                            reject(new Error('No data received from server'));
+                            return;
+                        }
+                        this.users = res.data.result;
+                        console.log(this.users);
+                        this.groupedUsers = this.groupByTeam(this.users);
+                        resolve(this.groupedUsers);
+                    }).catch(error => {
+                        reject(error);
+                    });
+            });
+        },
+        groupByTeam(users) {
+            return users.reduce((acc, user) => {
+                if (!acc[user.team_name]) {
+                    acc[user.team_name] = []
+                }
+                acc[user.team_name].push(user)
+                return acc
+            }, {});
+        },
+        viewProfile(user) {
+            delay(0)
+                .then(() => lStore.setObject('view_profile', user))
+                .then(() => {
+                    if (user.user_id == this.$userStore.user.user_id) this.$router.push('/profile').then(() => delay(500).then(() => scrollToTop()));
+                    else this.$router.push('/userprofile');
+                });
+        }
     }
 };
 </script>
 
 <style scoped>
-.profile-card img, form img {
+.profile-card img, .profile .profile-edit img,
+form img {
     width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
+}
+
+.profile-teammates > *:hover {
+    cursor: pointer;
+}
+
+.profile-teammates > div > div:hover h6 {
+    opacity: 0.6;
+    color: var(--text-color-link);
+}
+
+.profile-teammates > div > div:hover img {
+    opacity: 0.6;
+}
+
+.profile-teammates img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    color: transparent;
 }
 </style>

@@ -1,16 +1,13 @@
 <template>
+	<HeaderView />
 	<Transition class="animate__animated animate__fadeIn">
-		<div>
-			<HeaderView />
-			<SidebarView />
-		</div>
+		<SidebarView />
 	</Transition>
 </template>
   
 <script>
 import HeaderView from '@/components/HeaderView.vue';
 import SidebarView from '@/components/SidebarView.vue';
-import { showAlert } from '@/controller';
 
 export default {
 	components: { HeaderView, SidebarView },
@@ -20,9 +17,7 @@ export default {
 		};
 	},
 	mounted() {
-		if (this.$router.options.history.state.back == '/login') {
-			showAlert('alert-success', 'Login Successful!', 'bi-check-circle-fill');
-		}
+		// if (this.$router.options.history.state.back == '/login')
 	}
 };
 </script>

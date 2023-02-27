@@ -8,7 +8,7 @@
         </div>
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-                <li class="nav-item dropdown pe-3 m-0">
+                <li class="nav-item mode-button dropdown pe-3 m-0">
                     <button type="button" id="darkMode" class="btn btn-dark btn-sm rounded-circle d-flex align-item-center"><i class="ri-moon-fill"></i></button>
                     <button type="button" id="lightMode" class="btn btn-warning btn-sm rounded-circle d-flex align-item-center d-none"><i class="ri-sun-line"></i></button>
                 </li>
@@ -47,7 +47,7 @@
 
 <script>
 import { useUserStore } from '@/store';
-import { delay } from '@/controller';
+import { delay, showAlert } from '@/controller';
 
 export default {
     data() {
@@ -94,12 +94,16 @@ export default {
             this.isShow = !this.isShow;
         },
         logout() {
-            delay(0).then(() => {
+            delay(0)
+            .then(() => {
+                delay(0)
+                    .then(() => showAlert('alert-success', 'Logout Successful!', 'bi-check-circle-fill'))
+                    .then(() => this.$router.push('/login'));
+            })
+            .then(() => {
                 const userStore = useUserStore();
                 userStore.clearUser();
                 localStorage.clear();
-            }).then(() => {
-                this.$router.push('/login');
             });
         }
     }
@@ -112,5 +116,10 @@ export default {
     inset: 0px 0px auto auto;
     margin: 0px;
     transform: translate(-16px, 38px);
+}
+
+.mode-button button {
+    width: 32px;
+    height: 32px;
 }
 </style>

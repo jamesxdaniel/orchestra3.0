@@ -4,6 +4,7 @@
 	--color-background: #fff3cd;
 	--color-background-soft: #f8f9fa;
 	--text-color: #212529;
+	--text-color-soft: #2f3336;
 	--text-color-link: #dd4b39;
 	--button-bg-color: #007bff;
 	--color-primary: #dd4b39;
@@ -42,6 +43,7 @@ button {
 	--color-background: #212529;
 	--color-background-soft: #424242;
 	--text-color: #fff;
+	--text-color-soft: #f8f9fa;
 	--text-color-link: #dd4b39;
 	--button-bg-color: #ffc107;
 }
@@ -52,10 +54,19 @@ body.dark {
 	--color-background: #212529;
 	--color-background-soft: #424242;
 	--text-color: #fff;
+	--text-color-soft: #f8f9fa;
 	--text-color-link: #dd4b39;
 	--button-bg-color: #ffc107;
 }
 
+.alert {
+	z-index: 999;
+}
+
 .alert::before {
 	margin-right: 15px;
+}
+
+main {
+	min-height: 1000px;
 }

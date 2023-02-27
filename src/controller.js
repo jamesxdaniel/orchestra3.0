@@ -1,24 +1,24 @@
 class LocalStore {
-    set(key,value) {localStorage.setItem(key,value);}
-    get(key) {return localStorage.getItem(key);}
-    setObject(key,value) {localStorage.setItem(key,JSON.stringify(value));}
-    getObject(key) {return JSON.parse(localStorage.getItem(key));}
-    remove(key) {localStorage.removeItem(key);}
-    setInObject(parentKey,childKey,value) {
+    set(key, value) { localStorage.setItem(key, value); }
+    get(key) { return localStorage.getItem(key); }
+    setObject(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+    getObject(key) { return JSON.parse(localStorage.getItem(key)); }
+    remove(key) { localStorage.removeItem(key); }
+    setInObject(parentKey, childKey, value) {
         let parentObject = this.getObject(parentKey);
         parentObject[childKey] = value;
-        this.setObject(parentKey,parentObject);
+        this.setObject(parentKey, parentObject);
     }
     isset(key) {
         if (localStorage.getItem(key) == null) return false;
         return true;
     }
-    getInObject(parentKey,childKey) {
+    getInObject(parentKey, childKey) {
         let parentObject = this.getObject(parentKey);
         return parentObject[childKey];
     }
     objectify(stringObj) {
-        stringObj = stringObj.replaceAll('&#34;','"');
+        stringObj = stringObj.replaceAll('&#34;', '"');
         stringObj = JSON.parse(stringObj);
         return stringObj;
     }
@@ -28,9 +28,9 @@ const lStore = new LocalStore();
 
 function removeFix(object, fix) {
     let newObj = {};
-    
+
     for (let k in object) {
-        let key = k.toLowerCase().replaceAll(fix, ''); 
+        let key = k.toLowerCase().replaceAll(fix, '');
         newObj[key] = object[k];
     }
 
@@ -48,9 +48,17 @@ function showAlert(alertType, alertText, alertIcon) {
     setTimeout(() => alertDiv.remove(), 3000);
 }
 
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
+}
+
 export {
     lStore,
     removeFix,
     delay,
-    showAlert
+    showAlert,
+    scrollToTop
 };

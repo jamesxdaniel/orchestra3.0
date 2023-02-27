@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { lStore } from '@/controller';
 
 export const useUserStore = defineStore({
     id: 'userStore',
@@ -15,5 +16,12 @@ export const useUserStore = defineStore({
             this.user = null;
             this.isLoggedIn = false;
         },
+        loadUser() {
+            const user = lStore.getObject('user_information');
+            if (user) {
+                this.user = user;
+                this.isLoggedIn = true;
+            }
+        }
     },
 });
