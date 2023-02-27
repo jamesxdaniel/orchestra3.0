@@ -12,7 +12,8 @@
 								<i class="ri-mail-fill position-absolute top-50 end-0 pe-1 translate-middle"></i>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="password" class="form-control" id="floatingInput" placeholder="" v-model="password">
+								<input type="password" class="form-control" id="floatingInput" placeholder=""
+									v-model="password">
 								<label for="floatingInput">Password</label>
 								<i class="ri-lock-fill position-absolute top-50 end-0 pe-1 translate-middle"></i>
 							</div>
@@ -51,11 +52,11 @@ export default {
 				if (data.msg == null) return;
 				else if (data.success == true) {
 					console.log(data.result);
-					delay(0).then(()=>{
+					delay(0).then(() => {
 						const userStore = useUserStore();
 						userStore.setUser(data.result[0]);
 						lStore.setObject('user_information', data.result[0]);
-					}).then(()=>{
+					}).then(() => {
 						this.$router.push('/home');
 					});
 				} else {
@@ -78,10 +79,12 @@ export default {
 	object-position: 0 60%;
 }
 
-.loginError, .loginSuccess {
+.loginError,
+.loginSuccess {
 	display: none;
 }
 
 .show {
 	display: block;
-}</style>
+}
+</style>

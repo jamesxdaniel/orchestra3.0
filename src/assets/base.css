@@ -1,9 +1,9 @@
 /* Define the color variables */
 
 :root {
-	--color-background: #fff;
-	--color-background-soft: #f6f9ff;
-	--text-color: #333;
+	--color-background: #fff3cd;
+	--color-background-soft: #f8f9fa;
+	--text-color: #212529;
 	--text-color-link: #dd4b39;
 	--button-bg-color: #007bff;
 	--color-primary: #dd4b39;
@@ -39,7 +39,7 @@ button {
 /* Styles for dark mode */
 
 .dark {
-	--color-background: #333;
+	--color-background: #212529;
 	--color-background-soft: #424242;
 	--text-color: #fff;
 	--text-color-link: #dd4b39;
@@ -49,7 +49,7 @@ button {
 /* Toggle the dark mode */
 
 body.dark {
-	--color-background: #333;
+	--color-background: #212529;
 	--color-background-soft: #424242;
 	--text-color: #fff;
 	--text-color-link: #dd4b39;
