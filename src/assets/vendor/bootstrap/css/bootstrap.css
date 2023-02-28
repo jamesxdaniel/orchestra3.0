@@ -5893,9 +5893,10 @@ textarea.form-control-lg {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15%;
-  padding: 0;
-  color: #fff;
+  width: auto;
+  padding: 10px;
+  font-size: 2rem;
+  color: var(--bs-primary);
   text-align: center;
   background: none;
   border: 0;
@@ -5915,6 +5916,7 @@ textarea.form-control-lg {
   text-decoration: none;
   outline: 0;
   opacity: 0.9;
+  cursor: pointer;
 }
 
 .carousel-control-prev {

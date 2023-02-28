@@ -16,10 +16,13 @@
                             <div class="card border-3 border-top border-primary">
                                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                                     <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
-                                        alt="Profile" class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
+                                        alt="Profile"
+                                        class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
                                         v-if="this.$userStore.isLoggedIn && this.$userStore.user.user_photo.includes('assets/profile')">
                                     <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
-                                        alt="Profile" class="rounded-circle float-start me-3 p-1 border border-3 border-primary" v-else-if="this.$userStore.isLoggedIn">
+                                        alt="Profile"
+                                        class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
+                                        v-else-if="this.$userStore.isLoggedIn">
                                     <h2>{{ this.$userStore.user.user_alias_name }}</h2>
                                     <h3>{{ this.$userStore.user.team_name }}</h3>
                                     <ul class="list-group list-group-flush bg-transparent w-100 mt-3">
@@ -47,23 +50,27 @@
                                     <ul class="nav nav-tabs nav-tabs-bordered">
 
                                         <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent active" data-bs-toggle="tab"
-                                                data-bs-target="#profile-overview"><i class="ri-profile-fill me-2"></i> Overview</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent active"
+                                                data-bs-toggle="tab" data-bs-target="#profile-overview"><i
+                                                    class="ri-profile-fill me-2"></i> Overview</button>
                                         </li>
 
                                         <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent" data-bs-toggle="tab"
-                                                data-bs-target="#profile-edit"><i class="ri-edit-box-fill me-2"></i> Edit Profile</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent"
+                                                data-bs-toggle="tab" data-bs-target="#profile-edit"><i
+                                                    class="ri-edit-box-fill me-2"></i> Edit Profile</button>
                                         </li>
 
                                         <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent" data-bs-toggle="tab" 
-                                                data-bs-target="#profile-teammates" @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent"
+                                                data-bs-toggle="tab" data-bs-target="#profile-teammates"
+                                                @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
                                         </li>
 
                                         <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent" data-bs-toggle="tab" 
-                                                data-bs-target="#profile-kudos"><i class="ri-thumb-up-fill me-2"></i> Kudos</button>
+                                            <button class="nav-link d-flex align-items-center bg-transparent"
+                                                data-bs-toggle="tab" data-bs-target="#profile-kudos"><i
+                                                    class="ri-thumb-up-fill me-2"></i> Kudos</button>
                                         </li>
 
                                     </ul>
@@ -76,7 +83,8 @@
                                             <div class="row border-bottom pb-3">
                                                 <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
                                                         class="ri-team-fill me-3 fs-5"></i> Team Name</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.sub_team_name }}</div>
+                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.sub_team_name }}
+                                                </div>
                                             </div>
 
                                             <div class="row border-bottom pb-3">
@@ -129,12 +137,16 @@
                                                         class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                     <div class="col-md-8 col-lg-9">
                                                         <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
-                                                            alt="Profile" class="rounded-circle p-1 border border-3 border-primary"
+                                                            alt="Profile"
+                                                            class="rounded-circle p-1 border border-3 border-primary"
                                                             v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
                                                         <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
-                                                            alt="Profile" class="rounded-circle p-1 border border-3 border-primary"
+                                                            alt="Profile"
+                                                            class="rounded-circle p-1 border border-3 border-primary"
                                                             v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
-                                                        <img :src="this.imageUrl" alt="Profile" class="rounded-circle p-1 border border-3 border-primary" v-else>
+                                                        <img :src="this.imageUrl" alt="Profile"
+                                                            class="rounded-circle p-1 border border-3 border-primary"
+                                                            v-else>
                                                         <div class="pt-2">
                                                             <input type="file" id="openFile" hidden @change="onImageChange">
                                                             <label for="openFile"><a class="btn btn-sm btn-primary"><i
@@ -258,9 +270,19 @@
                                         <div class="tab-pane fade pt-3" id="profile-teammates">
 
                                             <div class="profile-teammates container">
-                                                <div class="row mb-5" v-for="(team, teamName) in groupedUsers" :key="teamName">
-                                                    <h2 class="p-3 mt-0 mb-3 bg-primary text-white fs-6 fw-bold d-flex align-items-center"><i class="ri-group-fill fs-4 me-3"></i> {{ teamName }}</h2>
-                                                    <div class="col-4 p-3 d-flex align-items-center" v-for="user in team" :key="user.user_full_name" @click="viewProfile(user)">
+                                                <h3
+                                                    class="d-flex justify-content-center align-items-center text-primary fw-bold mb-4">
+                                                    <i class="ri-team-fill me-2"></i> {{ this.$userStore.user.team_name }}
+                                                </h3>
+                                                <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
+                                                    :key="teamName">
+                                                    <h2
+                                                        class="p-3 mt-0 mb-3 bg-primary text-white fs-6 fw-bold d-flex align-items-center">
+                                                        <i class="ri-group-fill fs-4 me-3"></i> {{ teamName }}
+                                                    </h2>
+                                                    <div class="col-12 col-md-9 col-lg-4 p-3 d-flex align-items-center"
+                                                        v-for="user in team" :key="user.user_full_name"
+                                                        @click="viewProfile(user)" :class="{ disabled: this.loading }">
                                                         <img :src="`https://office.orchestra.tools/` + user.user_photo"
                                                             alt="Profile"
                                                             class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
@@ -274,6 +296,29 @@
                                                 </div>
                                             </div>
 
+                                        </div>
+
+                                        <div class="tab-pane fade pt-3" id="profile-kudos">
+                                            <div class="container position-relative" v-if="this.kudosList.length > 0">
+                                                <div id="carouselKudos" class="carousel slide pointer-event p-3 py-5" data-bs-ride="carousel">
+                                                    <div class="carousel-inner">
+                                                        <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': index === 0 }">
+                                                            <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-5">
+                                                                <span class="px-5">{{ item.message }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a class="carousel-control-prev text-primary" data-bs-target="#carouselKudos" data-bs-slide="prev">
+                                                    <i class="ri-arrow-left-s-fill" aria-hidden="true"></i>
+                                                </a>
+                                                <a class="carousel-control-next text-primary" data-bs-target="#carouselKudos" data-bs-slide="next">
+                                                    <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                            <div class="container" v-else>
+                                                <span>No Kudos Found!</span>
+                                            </div>
                                         </div>
 
                                     </div><!-- End Bordered Tabs -->
@@ -294,7 +339,7 @@
 import HeaderView from '@/components/HeaderView.vue';
 import SidebarView from '@/components/SidebarView.vue';
 import { useUserStore } from '@/store';
-import { lStore, delay, showAlert, scrollToTop } from '@/controller';
+import { lStore, delay, showAlert, scrollToTop, showAlertWithSpinner, cleanText } from '@/controller';
 import axios from 'axios';
 
 export default {
@@ -302,13 +347,15 @@ export default {
     data() {
         return {
             loading: false,
+            currentUserId: this.$userStore.user.user_id,
             user: {},
             path: '',
             chosenFile: [],
             imageUrl: null,
             selectedImage: null,
             users: {},
-            groupedUsers: {}
+            groupedUsers: {},
+            kudosList: {},
         }
     },
     mounted() {
@@ -323,6 +370,10 @@ export default {
         // console.log(this.user);
 
         this.loadTeammates();
+        this.loadKudos().then((res) => {
+            if (res.length <= 0) this.kudosList.length = 0;
+            else this.kudosList.length = res.length;
+        });
     },
     methods: {
         updateProfile() {
@@ -427,19 +478,50 @@ export default {
             }, {});
         },
         viewProfile(user) {
+            this.loading = true;
+            const alert = showAlertWithSpinner().show();
             delay(0)
                 .then(() => lStore.setObject('view_profile', user))
                 .then(() => {
-                    if (user.user_id == this.$userStore.user.user_id) this.$router.push('/profile').then(() => delay(500).then(() => scrollToTop()));
-                    else this.$router.push('/userprofile');
+                    if (user.user_id == this.currentUserId) {
+                        this.$router.push('/profile').then(() => {
+                            this.loading = false;
+                            alert.hide();
+                            delay(500).then(() => scrollToTop());
+                        });
+                    } else {
+                        this.$router.push('/userprofile').then(() => {
+                            this.loading = false;
+                            alert.hide();
+                        });
+                    }
                 });
+        },
+        loadKudos() {
+            return new Promise((resolve, reject) => {
+                axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showKudos?userid=${this.$userStore.user.user_id}`)
+                    .then((res) => {
+                        if (res.data.result == null) {
+                            reject(new Error('No data received from server'));
+                            return;
+                        }
+                        this.kudosList = res.data.result;
+                        this.kudosList.forEach(kudos => {
+                            kudos.message = cleanText(kudos.message);
+                        });
+                        resolve(this.kudosList);
+                    }).catch(error => {
+                        reject(error);
+                    });
+            });
         }
     }
 };
 </script>
 
 <style scoped>
-.profile-card img, .profile .profile-edit img,
+.profile-card img,
+.profile .profile-edit img,
 form img {
     width: 120px;
     height: 120px;
@@ -448,16 +530,16 @@ form img {
     color: transparent;
 }
 
-.profile-teammates > *:hover {
+.profile-teammates>*:hover {
     cursor: pointer;
 }
 
-.profile-teammates > div > div:hover h6 {
+.profile-teammates>div>div:hover h6 {
     opacity: 0.6;
     color: var(--text-color-link);
 }
 
-.profile-teammates > div > div:hover img {
+.profile-teammates>div>div:hover img {
     opacity: 0.6;
 }
 
