@@ -76,7 +76,7 @@
                                             <div class="row border-bottom pb-3">
                                                 <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
                                                         class="ri-team-fill me-3 fs-5"></i> Team Name</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.team_name }}</div>
+                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.sub_team_name }}</div>
                                             </div>
 
                                             <div class="row border-bottom pb-3">
@@ -129,12 +129,12 @@
                                                         class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                     <div class="col-md-8 col-lg-9">
                                                         <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
-                                                            alt="Profile"
+                                                            alt="Profile" class="rounded-circle p-1 border border-3 border-primary"
                                                             v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
                                                         <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
-                                                            alt="Profile" class="rounded-circle"
+                                                            alt="Profile" class="rounded-circle p-1 border border-3 border-primary"
                                                             v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
-                                                        <img :src="this.imageUrl" alt="Profile" v-else>
+                                                        <img :src="this.imageUrl" alt="Profile" class="rounded-circle p-1 border border-3 border-primary" v-else>
                                                         <div class="pt-2">
                                                             <input type="file" id="openFile" hidden @change="onImageChange">
                                                             <label for="openFile"><a class="btn btn-sm btn-primary"><i
@@ -320,7 +320,7 @@ export default {
         this.user.skype_name = this.$userStore.user.user_skype_name;
         this.user.emailer_email = this.$userStore.user.emailer_email;
         this.user.profilepicture = this.selectedImage;
-        console.log(this.user);
+        // console.log(this.user);
 
         this.loadTeammates();
     },
@@ -330,7 +330,6 @@ export default {
 
             if (this.selectedImage == null) {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/Usercontroller/editUser?userid=${this.$userStore.user.user_id}&password=${this.user.password}&confirmpassword=${this.user.confirm_password}&zimbraemail=${this.user.zimbra_email}&gmailemail=${this.user.gmail_email}&skypename=${this.user.skype_name}&webmail=${this.user.emailer_email}&emaileremail=${this.user.emailer_email}&contactnumber=${this.user.contact_number}`).then((res) => {
-                    console.log(res);
                     if (res.data.success) {
                         delay(0).then(() => {
                             const userStore = useUserStore();
@@ -358,11 +357,9 @@ export default {
                 formData.append('file', file);
                 formData.append('userid', this.$userStore.user.user_id);
                 axios.post('http://ns.proweaver.host/nsorchestra/api/Usercontroller/uploadfile?' + '&type=' + this.fileType(file.name), formData).then(res => {
-                    if (res.data.success === false) alert(res.data.msg);
-                    console.log(res);
+                    if (res.data.success === false) showAlert('alert-danger', res.data.msg, 'bi-exclamation-circle-fill');
                 }).then(() => {
                     axios.post(`http://ns.proweaver.host/nsorchestra/api/Usercontroller/editUser?userid=${this.$userStore.user.user_id}&password=${this.user.password}&confirmpassword=${this.user.confirm_password}&zimbraemail=${this.user.zimbra_email}&gmailemail=${this.user.gmail_email}&skypename=${this.user.skype_name}&webmail=${this.user.emailer_email}&emaileremail=${this.user.emailer_email}&contactnumber=${this.user.contact_number}`).then((res) => {
-                        console.log(res);
                         if (res.data.success) {
                             delay(0).then(() => {
                                 const userStore = useUserStore();
@@ -391,7 +388,6 @@ export default {
             const selectedFile = e.target.files[0];
             this.imageUrl = URL.createObjectURL(selectedFile);
             this.selectedImage = e.target.files[0];
-            console.log(this.imageUrl, this.selectedImage);
         },
         fileType(filename) {
             if (typeof filename != 'string') return;
@@ -414,7 +410,6 @@ export default {
                             return;
                         }
                         this.users = res.data.result;
-                        console.log(this.users);
                         this.groupedUsers = this.groupByTeam(this.users);
                         resolve(this.groupedUsers);
                     }).catch(error => {
@@ -424,10 +419,10 @@ export default {
         },
         groupByTeam(users) {
             return users.reduce((acc, user) => {
-                if (!acc[user.team_name]) {
-                    acc[user.team_name] = []
+                if (!acc[user.sub_team_name]) {
+                    acc[user.sub_team_name] = []
                 }
-                acc[user.team_name].push(user)
+                acc[user.sub_team_name].push(user)
                 return acc
             }, {});
         },

@@ -23,7 +23,7 @@
                                         class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
                                         v-else-if="this.$userStore.isLoggedIn">
                                     <h2>{{ this.loadedUser.user_full_name }}</h2>
-                                    <h3>{{ this.loadedUser.team_name }}</h3>
+                                    <h3>{{ this.loadedUser.main_team_name }}</h3>
                                     <ul class="list-group list-group-flush bg-transparent w-100 mt-3">
                                         <li
                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
@@ -132,7 +132,6 @@ export default {
                             return;
                         }
                         this.users = res.data.result;
-                        console.log(this.users);
                         this.groupedUsers = this.groupByTeam(this.users);
                         resolve(this.groupedUsers);
                     }).catch(error => {
@@ -142,10 +141,10 @@ export default {
         },
         groupByTeam(users) {
             return users.reduce((acc, user) => {
-                if (!acc[user.team_name]) {
-                    acc[user.team_name] = []
+                if (!acc[user.sub_team_name]) {
+                    acc[user.sub_team_name] = []
                 }
-                acc[user.team_name].push(user)
+                acc[user.sub_team_name].push(user)
                 return acc
             }, {});
         },

@@ -21,7 +21,7 @@
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" :class="{ 'show': isShow }">
                         <li class="dropdown-header">
                             <h6>{{ this.$userStore.user.user_alias_name }}</h6>
-                            <span>Web Designer</span>
+                            <span>{{ this.$userStore.user.team_name }}</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -87,7 +87,7 @@ export default {
         darkMode.classList.toggle('d-none', localStorage.getItem('theme') === 'dark');
         lightMode.classList.toggle('d-none', localStorage.getItem('theme') === 'light');
 
-        console.log(this.$userStore.user);
+        // console.log(this.$userStore.user);
     },
     methods: {
         toggleClass() {
@@ -103,7 +103,8 @@ export default {
             .then(() => {
                 const userStore = useUserStore();
                 userStore.clearUser();
-                localStorage.clear();
+                localStorage.removeItem('user_information');
+                localStorage.removeItem('view_profile');
             });
         }
     }

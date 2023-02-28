@@ -116,10 +116,11 @@
         //function to show teamates
         public function show_teammates($team_id){
             $query = $this->db
-                    ->select('users.user_photo,users.user_id,users.user_full_name,users_sub_team.team_name,users_team_members.date_assigned,users_team_members.team_id')
+                    ->select('users.user_photo,users.user_id,users.user_full_name,ut.team_name as main_team_name,ust.team_name as sub_team_name,users_team_members.date_assigned,users_team_members.team_id')
                     ->from($this->table_name)
                     ->join('users_team_members','users_team_members.user_id = users.user_id')
-                    ->join('users_sub_team', 'users_sub_team.id = users_team_members.sub_team_id')
+                    ->join('users_sub_team ust', 'ust.id = users_team_members.sub_team_id')
+                    ->join('users_team ut','ut.team_id = users_team_members.team_id')
                     ->where(array('users_team_members.team_id' => $team_id))
                     ->where(array('users.user_status' => '1'))
                     ->get();

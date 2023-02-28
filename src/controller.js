@@ -22,7 +22,7 @@ class LocalStore {
         stringObj = JSON.parse(stringObj);
         return stringObj;
     }
-}
+};
 
 const lStore = new LocalStore();
 
@@ -35,7 +35,7 @@ function removeFix(object, fix) {
     }
 
     return newObj;
-}
+};
 
 const delay = t => new Promise(resolve => setTimeout(resolve, t));
 
@@ -46,14 +46,14 @@ function showAlert(alertType, alertText, alertIcon) {
     document.body.appendChild(alertDiv);
     setTimeout(() => alertDiv.classList.add('animate__fadeOutUp'), 2000);
     setTimeout(() => alertDiv.remove(), 3000);
-}
+};
 
 function scrollToTop() {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     })
-}
+};
 
 export {
     lStore,

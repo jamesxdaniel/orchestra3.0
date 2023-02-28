@@ -1,7 +1,10 @@
 <template>
 	<HeaderView />
 	<Transition class="animate__animated animate__fadeIn">
-		<SidebarView />
+        <div>
+            <SidebarView />
+			<main id="main" class="main" v-if="this.$userStore.isLoggedIn"></main>
+		</div>
 	</Transition>
 </template>
   
