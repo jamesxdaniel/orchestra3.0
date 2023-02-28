@@ -3,10 +3,10 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link " href="/home">
+                <router-link to="/home" class="nav-link">
                     <i class="ri-home-3-line"></i>
                     <span>Home</span>
-                </a>
+                </router-link>
             </li>
 
         </ul>

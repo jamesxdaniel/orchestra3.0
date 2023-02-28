@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper vh-100 d-flex flex-column justify-content-center align-items-center">
 		<div class="d-flex w-100">
-			<div class="card w-100 m-auto">
+			<div class="card border-3 border-top border-primary w-100 m-auto">
 				<div class="card-body py-5 px-4">
 					<h1 class="card-title text-primary text-center fs-3 p-0 mb-4">Orchestra 3.0</h1>
 					<div class="form-input">

@@ -163,13 +163,12 @@ export default {
 </script>
 
 <style scoped>
-.profile-card img,
-.profile .profile-edit img,
-form img {
+.profile-card img, .profile .profile-edit img, form img {
     width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
+    color: transparent;
 }
 
 .profile-teammates>*:hover {

@@ -450,6 +450,7 @@ form img {
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
+    color: transparent;
 }
 
 .profile-teammates > *:hover {
