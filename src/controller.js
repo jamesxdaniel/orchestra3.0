@@ -124,13 +124,15 @@ function cleanText(text) {
         // add more replacements as needed
     };
 
-    return text.replace(/&#?\w+;/g, match => {
+    const cleaner = text.replace(/&#?\w+;/g, match => {
         if (replacements.hasOwnProperty(match)) {
             return replacements[match];
         } else {
             return match;
         }
     });
+
+    return cleaner.trim();
 }
 
 export {

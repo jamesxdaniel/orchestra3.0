@@ -5894,7 +5894,7 @@ textarea.form-control-lg {
   align-items: center;
   justify-content: center;
   width: auto;
-  padding: 10px;
+  padding: 0;
   font-size: 2rem;
   color: var(--bs-primary);
   text-align: center;

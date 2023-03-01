@@ -68,7 +68,7 @@
 
                                             <div class="profile-teammates container">
                                                 <h3
-                                                    class="d-flex justify-content-center align-items-center text-primary fw-bold mb-4">
+                                                    class="d-flex justify-content-center align-items-center text-primary fs-3 fw-bold mb-4">
                                                     <i class="ri-team-fill me-2"></i> {{ this.loadedUser.main_team_name }}
                                                 </h3>
                                                 <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
@@ -96,25 +96,41 @@
                                         </div>
 
                                         <div class="tab-pane fade pt-3" id="profile-kudos">
-                                            <div class="container position-relative" v-if="this.kudosList.length > 0">
-                                                <div id="carouselKudos" class="carousel slide pointer-event p-3 py-5" data-bs-ride="carousel">
+                                            <div class="container p-0 p-md-3 position-relative" v-if="this.kudosList.length > 0">
+                                                <div id="carouselKudos" class="carousel slide pointer-event p-3" data-bs-ride="carousel">
                                                     <div class="carousel-inner">
-                                                        <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': index === 0 }">
-                                                            <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-5">
-                                                                <span>{{ item.message }}</span>
+                                                        <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': isActive(index) }">
+                                                            <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-1 px-md-3 px-lg-5">
+                                                                <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5">
+                                                                    <div class="col-auto d-flex flex-column justify-content-center align-items-center"
+                                                                        v-for="(user, index) in item.users" :key="index"
+                                                                        @click="viewProfile(user)">
+                                                                        <img :src="`https://office.orchestra.tools/` + user.user_photo" alt="Profile"
+                                                                            class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                            v-if="user.user_photo.includes('assets/profile')">
+                                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
+                                                                            alt="Profile"
+                                                                            class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                            v-else>
+                                                                        <span class="mt-2 text-primary">{{ user.user_alias_name }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <span class="w-auto">{{ item.message }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a class="carousel-control-prev text-primary" data-bs-target="#carouselKudos" data-bs-slide="prev">
+                                                <a class="carousel-control-prev text-primary d-none d-md-flex" data-bs-target="#carouselKudos" data-bs-slide="prev">
                                                     <i class="ri-arrow-left-s-fill" aria-hidden="true"></i>
                                                 </a>
-                                                <a class="carousel-control-next text-primary" data-bs-target="#carouselKudos" data-bs-slide="next">
+                                                <a class="carousel-control-next text-primary d-none d-md-flex" data-bs-target="#carouselKudos" data-bs-slide="next">
                                                     <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                             <div class="container" v-else>
-                                                <span>No Kudos Found!</span>
+                                                <div class="d-flex justify-content-center align-items-center flex-column text-center">
+                                                    <span class="text-secondary">No Kudos Found</span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -147,6 +163,7 @@ export default {
             users: {},
             groupedUsers: {},
             kudosList: {},
+            activeIndex: 0
         }
     },
     created() {
@@ -162,10 +179,11 @@ export default {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${this.loadedUser.team_id}`)
                     .then((res) => {
                         if (res.data.result == null) {
-                            reject(new Error('No data received from server'));
+                            resolve(res.data.msg);
                             return;
                         }
                         this.users = res.data.result;
+                        this.users = this.validateUserStatus(this.users);
                         this.groupedUsers = this.groupByTeam(this.users);
                         resolve(this.groupedUsers);
                     }).catch(error => {
@@ -173,17 +191,24 @@ export default {
                     });
             });
         },
+        validateUserStatus(users) {
+            return users.filter(user => user.user_status !== '0');
+        },
         groupByTeam(users) {
             return users.reduce((acc, user) => {
-                if (!acc[user.sub_team_name]) {
-                    acc[user.sub_team_name] = []
+                if (user.user_status !== 0) {
+                    if (!acc[user.sub_team_name]) {
+                        acc[user.sub_team_name] = []
+                    }
+                    acc[user.sub_team_name].push(user)
                 }
-                acc[user.sub_team_name].push(user)
                 return acc
             }, {});
         },
         viewProfile(user) {
             this.loading = true;
+            this.kudosList = {};
+            
             const alert = showAlertWithSpinner().show();
             delay(0)
                 .then(() => lStore.setObject('view_profile', user))
@@ -212,28 +237,39 @@ export default {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showKudos?userid=${this.loadedUser.user_id}`)
                     .then((res) => {
                         if (res.data.result == null) {
-                            reject(new Error('No data received from server'));
+                            console.log(res.data);
                             return;
                         }
                         this.kudosList = res.data.result;
                         this.kudosList.forEach(kudos => {
                             kudos.message = cleanText(kudos.message);
                         });
-                        console.log(this.kudosList);
                         resolve(this.kudosList);
                     }).catch(error => {
                         reject(error);
                     });
             });
+        },
+        isActive(index) {
+            return index === this.activeIndex;
+        }
+    },
+    watch: {
+        kudosList: {
+            handler: function() {
+                // If the first item is not active, set it as active
+                if (!this.isActive(0)) {
+                    this.activeIndex = 0;
+                }
+            },
+            deep: true
         }
     }
 };
 </script>
 
 <style scoped>
-.profile-card img,
-.profile .profile-edit img,
-form img {
+.profile-card img, .profile .profile-edit img, form img {
     width: 120px;
     height: 120px;
     object-fit: cover;
@@ -241,16 +277,16 @@ form img {
     color: transparent;
 }
 
-.profile-teammates>*:hover {
+.profile-teammates>*:hover, .carousel div.col-auto:hover {
     cursor: pointer;
 }
 
-.profile-teammates>div>div:hover h6 {
+.profile-teammates>div>div:hover h6, .carousel div.col-auto:hover span {
     opacity: 0.6;
     color: var(--text-color-link);
 }
 
-.profile-teammates>div>div:hover img {
+.profile-teammates>div>div:hover img, .carousel div.col-auto:hover img {
     opacity: 0.6;
 }
 
@@ -259,4 +295,12 @@ form img {
     height: 50px;
     object-fit: cover;
     color: transparent;
-}</style>
+}
+
+.carousel img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    color: transparent;
+}
+</style>
