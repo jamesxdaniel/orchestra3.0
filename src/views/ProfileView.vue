@@ -501,6 +501,7 @@ export default {
             }, {});
         },
         viewProfile(user) {
+            if (user.user_id == this.currentUserId) return;
             this.loading = true;
             this.kudosList = {};
             

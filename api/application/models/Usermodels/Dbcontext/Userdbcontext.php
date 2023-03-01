@@ -42,7 +42,7 @@
             if(count($query->result())>0){
                 return $query->result();
             }else{
-                throw new InvalidArgumentException('There is no user found in database');
+                throw new InvalidArgumentException('There is no user found in the database!');
             }
         }
         
@@ -59,7 +59,7 @@
                         $flag = 0;
                     }else{
                         $flag = 1;
-                        throw new InvalidArgumentException('It seems like you use your old password! please enter a new password.');
+                        throw new InvalidArgumentException('It seems like you used your old password! Please enter a new password.');
                     }
                 }
                 if($flag == 0)
@@ -77,11 +77,11 @@
                         ->get();
                         return $query->row_array();
                     }else{
-                        throw new InvalidArgumentException('Sorry something went wrong! Try again later');
+                        throw new InvalidArgumentException('Sorry something went wrong! Try again later.');
                     }
                 }
             }else{
-                throw new InvalidArgumentException('Sorry something went wrong! Try again later');
+                throw new InvalidArgumentException('Sorry something went wrong! Try again later.');
             }
         }
 
@@ -90,7 +90,7 @@
             if(isset($id)){
                 $this->db->delete($this->table_name,array('id'=>$id));
             }else{
-                throw new InvalidArgumentException('The parameters pass recieve is null');
+                throw new InvalidArgumentException('The parameters pass recieved is null');
             }
         }
 
@@ -107,27 +107,26 @@
                 if(sha1($password) == $query->row()->user_password){
                     return $query->result();
                 }else{
-                    throw new InvalidArgumentException('Email or Password doesn`t match!');
+                    throw new InvalidArgumentException('Email or password doesn\'t match!');
                 }
             }else{
-                throw new InvalidArgumentException('Email or Password doesn`t match!');
+                throw new InvalidArgumentException('Email or password doesn\'t match!');
             }
         }
         //function to show teamates
         public function show_teammates($team_id){
             $query = $this->db
-                    ->select('users.user_photo,users.user_id,users.user_full_name,ut.team_name as main_team_name,ust.team_name as sub_team_name,users_team_members.date_assigned,users_team_members.team_id')
+                    ->select('users.user_status,users.user_photo,users.user_id,users.user_full_name,ut.team_name as main_team_name,ust.team_name as sub_team_name,users_team_members.date_assigned,users_team_members.team_id')
                     ->from($this->table_name)
                     ->join('users_team_members','users_team_members.user_id = users.user_id')
                     ->join('users_sub_team ust', 'ust.id = users_team_members.sub_team_id')
                     ->join('users_team ut','ut.team_id = users_team_members.team_id')
                     ->where(array('users_team_members.team_id' => $team_id))
-                    ->where(array('users.user_status' => '1'))
                     ->get();
             if($query->num_rows() > 0){
                 return $query->result();
             }else{
-                throw new InvalidArgumentException('You are not in a team yet');
+                throw new InvalidArgumentException('You are not in a team yet!');
             }
         }
         //function to show user kudos
@@ -142,18 +141,59 @@
             {
                 return $query;
             }else{
-                throw new InvalidArgumentException('Something went wrong');
+                throw new InvalidArgumentException('Sorry something went wrong! Try again later.');
             }
         }
-        public function showkudos($user_id){
+        public function showkudos($user_id)
+        {
             $query = $this->db
-                    ->get_where('kudos',array('user_id' => $user_id));
-            
-            if($query->num_rows() >= 0)
-            {
-                return $query->result();
+                ->select('kudos.*,users.user_photo,users.user_alias_name')
+                ->from('kudos')
+                ->join('users', 'FIND_IN_SET(users.user_id, kudos.user_id) > 0')
+                ->where("FIND_IN_SET('$user_id', kudos.user_id) !=", 0)
+                ->group_by('kudos.kudos_id')
+                ->get();
+            if ($query->num_rows() > 0) {
+                $result = $query->result_array();
+        
+                // Get the list of user IDs from the kudos result
+                $user_ids = [];
+                foreach ($result as $row) {
+                    $ids = explode(',', $row['user_id']);
+                    $user_ids = array_merge($user_ids, $ids);
+                }
+                $user_ids = array_unique($user_ids);
+        
+                // Get the user details for the user IDs in the kudos result
+                $user_query = $this->db
+                    ->select('users.*,ut.team_name as main_team_name,ut.team_id')
+                    ->from('users')
+                    ->join('users_team_members', 'users_team_members.user_id = users.user_id')
+                    ->join('users_team ut', 'ut.team_id = users_team_members.team_id')
+                    ->where_in('users.user_id', $user_ids)
+                    ->get();
+        
+                if ($user_query->num_rows() > 0) {
+                    $users = $user_query->result_array();
+        
+                    // Map the user details to the kudos result
+                    foreach ($result as &$row) {
+                        $ids = explode(',', $row['user_id']);
+                        $row_users = array_filter($users, function($user) use ($ids) {
+                            return in_array($user['user_id'], $ids);
+                        });
+                        $row_users = array_values($row_users);
+                        $row['users'] = $row_users;
+                    }
+                    unset($row);
+        
+                    return $result;
+                }
+            }else if ($query->num_rows() <= 0) {
+                $result = $query->result_array();
+                return $result;
             }else{
-                throw new InvalidArgumentException('Something went wrong');
+                throw new InvalidArgumentException('Sorry something went wrong! Try again later.');
             }
         }
     }
