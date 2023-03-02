@@ -1,353 +1,351 @@
 <template>
     <HeaderView />
+    <SidebarView />
     <Transition class="animate__animated animate__fadeIn">
-        <div>
-            <SidebarView />
-            <main id="main" class="main" v-if="this.$userStore.isLoggedIn">
+        <main id="main" class="main" v-if="this.$userStore.isLoggedIn">
 
-                <div class="pagetitle">
-                    <h1>My Profile</h1>
-                </div><!-- End Page Title -->
+            <div class="pagetitle">
+                <h1>My Profile</h1>
+            </div><!-- End Page Title -->
 
-                <section class="section profile">
-                    <div class="row">
-                        <div class="col-xl-4">
+            <section class="section profile">
+                <div class="row">
+                    <div class="col-xl-4">
 
-                            <div class="card border-3 border-top border-primary">
-                                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                                    <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
-                                        alt="Profile"
-                                        class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
-                                        v-if="this.$userStore.isLoggedIn && this.$userStore.user.user_photo.includes('assets/profile')">
-                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
-                                        alt="Profile"
-                                        class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
-                                        v-else-if="this.$userStore.isLoggedIn">
-                                    <h2>{{ this.$userStore.user.user_alias_name }}</h2>
-                                    <h3>{{ this.$userStore.user.team_name }}</h3>
-                                    <ul class="list-group list-group-flush bg-transparent w-100 mt-3">
-                                        <li
-                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                            QA Error <span class="badge bg-primary rounded-pill">14</span></li>
-                                        <li
-                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                            Tasks <span class="badge bg-primary rounded-pill">2</span></li>
-                                        <li
-                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                            Pending Tasks <span class="badge bg-primary rounded-pill">1</span></li>
-                                    </ul>
-                                </div>
+                        <div class="card border-3 border-top border-primary">
+                            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
+                                    alt="Profile"
+                                    class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
+                                    v-if="this.$userStore.isLoggedIn && this.$userStore.user.user_photo.includes('assets/profile')">
+                                <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
+                                    alt="Profile"
+                                    class="rounded-circle float-start me-3 p-1 border border-3 border-primary"
+                                    v-else-if="this.$userStore.isLoggedIn">
+                                <h2>{{ this.$userStore.user.user_full_name }}</h2>
+                                <h3>{{ currentUserRole }}</h3>
+                                <ul class="list-group list-group-flush bg-transparent w-100 mt-4">
+                                    <li
+                                        class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                        QA Error <span class="badge bg-primary rounded-pill">14</span></li>
+                                    <li
+                                        class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                        Tasks <span class="badge bg-primary rounded-pill">2</span></li>
+                                    <li
+                                        class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                        Pending Tasks <span class="badge bg-primary rounded-pill">1</span></li>
+                                </ul>
                             </div>
-
                         </div>
 
-                        <div class="col-xl-8">
-
-                            <div class="card">
-                                <div class="card-body pt-3">
-
-                                    <!-- Bordered Tabs -->
-                                    <ul class="nav nav-tabs nav-tabs-bordered">
-
-                                        <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent active"
-                                                data-bs-toggle="tab" data-bs-target="#profile-overview"><i
-                                                    class="ri-profile-fill me-2"></i> Overview</button>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent"
-                                                data-bs-toggle="tab" data-bs-target="#profile-edit"><i
-                                                    class="ri-edit-box-fill me-2"></i> Edit Profile</button>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent"
-                                                data-bs-toggle="tab" data-bs-target="#profile-teammates"
-                                                @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <button class="nav-link d-flex align-items-center bg-transparent"
-                                                data-bs-toggle="tab" data-bs-target="#profile-kudos"><i
-                                                    class="ri-thumb-up-fill me-2"></i> Kudos</button>
-                                        </li>
-
-                                    </ul>
-
-                                    <div class="tab-content pt-2">
-
-                                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                            <h5 class="card-title">Profile Details</h5>
-
-                                            <div class="row border-bottom pb-3">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-team-fill me-3 fs-5"></i> Team Name</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.team_name }}
-                                                </div>
-                                            </div>
-
-                                            <div class="row border-bottom pb-3">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-mail-fill me-3 fs-5"></i> Email</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_email }}</div>
-                                            </div>
-
-                                            <div class="row border-bottom pb-3">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-phone-fill me-3 fs-5"></i> Contact Number</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_phone }}</div>
-                                            </div>
-
-                                            <div class="row border-bottom pb-3">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-mail-fill me-3 fs-5"></i> Zimbra Email</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_zimbra_email }}
-                                                </div>
-                                            </div>
-
-                                            <div class="row border-bottom pb-3">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-google-fill me-3 fs-5"></i> Gmail Email</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_gmail_email }}
-                                                </div>
-                                            </div>
-
-                                            <div class="row border-bottom pb-3">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-skype-fill me-3 fs-5"></i> Skype Name</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_skype_name }}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                        class="ri-mail-fill me-3 fs-5"></i> Web Mail</div>
-                                                <div class="col-lg-9 col-md-8">{{ this.$userStore.user.security_email }}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
-                                            <!-- Profile Edit Form -->
-                                            <div>
-                                                <div class="row mb-3">
-                                                    <label for="profileImage"
-                                                        class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
-                                                            alt="Profile"
-                                                            class="rounded-circle p-1 border border-3 border-primary"
-                                                            v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
-                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
-                                                            alt="Profile"
-                                                            class="rounded-circle p-1 border border-3 border-primary"
-                                                            v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
-                                                        <img :src="this.imageUrl" alt="Profile"
-                                                            class="rounded-circle p-1 border border-3 border-primary"
-                                                            v-else>
-                                                        <div class="pt-2">
-                                                            <input type="file" id="openFile" hidden @change="onImageChange">
-                                                            <label for="openFile"><a class="btn btn-sm btn-primary"><i
-                                                                        class="bi bi-upload"></i></a></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full
-                                                        Name</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="fullName" type="text" class="form-control"
-                                                            id="full_name"
-                                                            :placeholder="this.$userStore.user.user_full_name" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="fullName"
-                                                        class="col-md-4 col-lg-3 col-form-label">A.K.A</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="fullName" type="text" class="form-control"
-                                                            id="alias_name"
-                                                            :placeholder="this.$userStore.user.user_alias_name" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="about" class="col-md-4 col-lg-3 col-form-label">Email
-                                                        Address</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="fullName" type="text" class="form-control"
-                                                            id="emailer_email"
-                                                            :placeholder="this.$userStore.user.user_email" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Contact
-                                                        Number</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="company" type="text" class="form-control"
-                                                            id="contact_number" v-model="user.contact_number"
-                                                            :placeholder="this.$userStore.user.user_phone">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="company"
-                                                        class="col-md-4 col-lg-3 col-form-label">Password</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="company" type="password" class="form-control"
-                                                            id="password" v-model="user.password" placeholder="********">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Confirm
-                                                        Password</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="company" type="password" class="form-control"
-                                                            id="confirm_password" v-model="user.confirm_password"
-                                                            placeholder="********">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Zimbra
-                                                        Email</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="company" type="text" class="form-control"
-                                                            id="zimbra_email" v-model="user.zimbra_email"
-                                                            :placeholder="this.$userStore.user.user_zimbra_email">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Gmail
-                                                        Email</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="company" type="text" class="form-control"
-                                                            id="zimbra_email" v-model="user.gmail_email"
-                                                            :placeholder="this.$userStore.user.user_gmail_email">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Skype
-                                                        Name</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="company" type="text" class="form-control"
-                                                            id="zimbra_email" v-model="user.skype_name"
-                                                            :placeholder="this.$userStore.user.user_skype_name">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mb-3">
-                                                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Emailer
-                                                        Email</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="email" type="email" class="form-control" id="Email"
-                                                            v-model="user.emailer_email"
-                                                            :placeholder="this.$userStore.user.user_emailer_email">
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end">
-                                                    <button type="submit" class="btn btn-primary" @click="updateProfile"
-                                                        :disabled="this.loading">
-                                                        <span v-if="!this.loading">Save Changes</span>
-                                                        <span class="spinner-border spinner-border-sm me-2" role="status"
-                                                            aria-hidden="true" v-if="this.loading"></span>
-                                                        <span v-if="this.loading">Saving Changes</span>
-                                                    </button>
-                                                </div>
-                                            </div><!-- End Profile Edit Form -->
-
-                                        </div>
-
-                                        <div class="tab-pane fade pt-3" id="profile-teammates">
-
-                                            <div class="profile-teammates container">
-                                                <h3
-                                                    class="d-flex justify-content-center align-items-center text-primary fs-3 fw-bold mb-4">
-                                                    <i class="ri-team-fill me-2"></i> {{ this.$userStore.user.team_name }}
-                                                </h3>
-                                                <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
-                                                    :key="teamName">
-                                                    <h2
-                                                        class="p-3 mt-0 mb-3 bg-primary text-white fs-6 fw-bold d-flex align-items-center">
-                                                        <i class="ri-group-fill fs-4 me-3"></i> {{ teamName }}
-                                                    </h2>
-                                                    <div class="col-12 col-md-9 col-lg-4 p-3 d-flex align-items-center"
-                                                        v-for="user in team" :key="user.user_full_name"
-                                                        @click="viewProfile(user)" :class="{ disabled: this.loading }">
-                                                        <img :src="`https://office.orchestra.tools/` + user.user_photo"
-                                                            alt="Profile"
-                                                            class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
-                                                            v-if="user.user_photo.includes('assets/profile')">
-                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
-                                                            alt="Profile"
-                                                            class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
-                                                            v-else>
-                                                        <h6 class="m-0">{{ user.user_full_name }}</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="tab-pane fade pt-3" id="profile-kudos">
-                                            <div class="container p-0 p-md-3 position-relative" v-if="this.kudosList.length > 0">
-                                                <div id="carouselKudos" class="carousel slide pointer-event p-3" data-bs-ride="carousel">
-                                                    <div class="carousel-inner">
-                                                        <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': isActive(index) }">
-                                                            <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-1 px-md-3 px-lg-5">
-                                                                <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5">
-                                                                    <div class="col-auto d-flex flex-column justify-content-center align-items-center"
-                                                                        v-for="(user, index) in item.users" :key="index"
-                                                                        @click="viewProfile(user)">
-                                                                        <img :src="`https://office.orchestra.tools/` + user.user_photo" alt="Profile"
-                                                                            class="rounded-circle float-start p-1 border border-3 border-primary"
-                                                                            v-if="user.user_photo.includes('assets/profile')">
-                                                                        <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
-                                                                            alt="Profile"
-                                                                            class="rounded-circle float-start p-1 border border-3 border-primary"
-                                                                            v-else>
-                                                                        <span class="mt-2 text-primary">{{ user.user_alias_name }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <span class="w-auto">{{ item.message }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <a class="carousel-control-prev text-primary d-none d-md-flex" data-bs-target="#carouselKudos" data-bs-slide="prev">
-                                                    <i class="ri-arrow-left-s-fill" aria-hidden="true"></i>
-                                                </a>
-                                                <a class="carousel-control-next text-primary d-none d-md-flex" data-bs-target="#carouselKudos" data-bs-slide="next">
-                                                    <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
-                                            <div class="container" v-else>
-                                                <div class="d-flex justify-content-center align-items-center flex-column text-center">
-                                                    <span class="text-secondary">No Kudos Found</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div><!-- End Bordered Tabs -->
-
-                                </div>
-                            </div>
-
-                        </div>
                     </div>
-                </section>
 
-            </main>
-        </div>
+                    <div class="col-xl-8">
+
+                        <div class="card">
+                            <div class="card-body pt-3">
+
+                                <!-- Bordered Tabs -->
+                                <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                    <li class="nav-item">
+                                        <button class="nav-link d-flex align-items-center bg-transparent active"
+                                            data-bs-toggle="tab" data-bs-target="#profile-overview"><i
+                                                class="ri-profile-fill me-2"></i> Overview</button>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <button class="nav-link d-flex align-items-center bg-transparent"
+                                            data-bs-toggle="tab" data-bs-target="#profile-edit"><i
+                                                class="ri-edit-box-fill me-2"></i> Edit Profile</button>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <button class="nav-link d-flex align-items-center bg-transparent"
+                                            data-bs-toggle="tab" data-bs-target="#profile-teammates"
+                                            @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <button class="nav-link d-flex align-items-center bg-transparent"
+                                            data-bs-toggle="tab" data-bs-target="#profile-kudos"><i
+                                                class="ri-thumb-up-fill me-2"></i> Kudos</button>
+                                    </li>
+
+                                </ul>
+
+                                <div class="tab-content pt-2">
+
+                                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                        <h5 class="card-title">Profile Details</h5>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-team-fill me-3 fs-5"></i> Team Name</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.team_name }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-mail-fill me-3 fs-5"></i> Email</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_email }}</div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-phone-fill me-3 fs-5"></i> Contact Number</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_phone }}</div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-mail-fill me-3 fs-5"></i> Zimbra Email</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_zimbra_email }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-google-fill me-3 fs-5"></i> Gmail Email</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_gmail_email }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-skype-fill me-3 fs-5"></i> Skype Name</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_skype_name }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
+                                                    class="ri-mail-fill me-3 fs-5"></i> Web Mail</div>
+                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.security_email }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                                        <!-- Profile Edit Form -->
+                                        <div>
+                                            <div class="row mb-3">
+                                                <label for="profileImage"
+                                                    class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
+                                                        alt="Profile"
+                                                        class="rounded-circle p-1 border border-3 border-primary"
+                                                        v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
+                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
+                                                        alt="Profile"
+                                                        class="rounded-circle p-1 border border-3 border-primary"
+                                                        v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
+                                                    <img :src="this.imageUrl" alt="Profile"
+                                                        class="rounded-circle p-1 border border-3 border-primary"
+                                                        v-else>
+                                                    <div class="pt-2">
+                                                        <input type="file" id="openFile" hidden @change="onImageChange">
+                                                        <label for="openFile"><a class="btn btn-sm btn-primary"><i
+                                                                    class="bi bi-upload"></i></a></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full
+                                                    Name</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="fullName" type="text" class="form-control"
+                                                        id="full_name"
+                                                        :placeholder="this.$userStore.user.user_full_name" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="fullName"
+                                                    class="col-md-4 col-lg-3 col-form-label">A.K.A</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="fullName" type="text" class="form-control"
+                                                        id="alias_name"
+                                                        :placeholder="this.$userStore.user.user_alias_name" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="about" class="col-md-4 col-lg-3 col-form-label">Email
+                                                    Address</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="fullName" type="text" class="form-control"
+                                                        id="emailer_email"
+                                                        :placeholder="this.$userStore.user.user_email" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="company" class="col-md-4 col-lg-3 col-form-label">Contact
+                                                    Number</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="company" type="text" class="form-control"
+                                                        id="contact_number" v-model="user.contact_number"
+                                                        :placeholder="this.$userStore.user.user_phone">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="company"
+                                                    class="col-md-4 col-lg-3 col-form-label">Password</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="company" type="password" class="form-control"
+                                                        id="password" v-model="user.password" placeholder="********">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="company" class="col-md-4 col-lg-3 col-form-label">Confirm
+                                                    Password</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="company" type="password" class="form-control"
+                                                        id="confirm_password" v-model="user.confirm_password"
+                                                        placeholder="********">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="Country" class="col-md-4 col-lg-3 col-form-label">Zimbra
+                                                    Email</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="company" type="text" class="form-control"
+                                                        id="zimbra_email" v-model="user.zimbra_email"
+                                                        :placeholder="this.$userStore.user.user_zimbra_email">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="Address" class="col-md-4 col-lg-3 col-form-label">Gmail
+                                                    Email</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="company" type="text" class="form-control"
+                                                        id="zimbra_email" v-model="user.gmail_email"
+                                                        :placeholder="this.$userStore.user.user_gmail_email">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Skype
+                                                    Name</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="company" type="text" class="form-control"
+                                                        id="zimbra_email" v-model="user.skype_name"
+                                                        :placeholder="this.$userStore.user.user_skype_name">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="Email" class="col-md-4 col-lg-3 col-form-label">Emailer
+                                                    Email</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="email" type="email" class="form-control" id="Email"
+                                                        v-model="user.emailer_email"
+                                                        :placeholder="this.$userStore.user.user_emailer_email">
+                                                </div>
+                                            </div>
+
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary" @click="updateProfile"
+                                                    :disabled="this.loading">
+                                                    <span v-if="!this.loading">Save Changes</span>
+                                                    <span class="spinner-border spinner-border-sm me-2" role="status"
+                                                        aria-hidden="true" v-if="this.loading"></span>
+                                                    <span v-if="this.loading">Saving Changes</span>
+                                                </button>
+                                            </div>
+                                        </div><!-- End Profile Edit Form -->
+
+                                    </div>
+
+                                    <div class="tab-pane fade pt-3" id="profile-teammates">
+
+                                        <div class="profile-teammates container">
+                                            <h3
+                                                class="d-flex justify-content-center align-items-center text-primary fs-3 fw-bold mb-4">
+                                                <i class="ri-team-fill me-2"></i> {{ this.$userStore.user.team_name }}
+                                            </h3>
+                                            <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
+                                                :key="teamName">
+                                                <h2
+                                                    class="p-3 mt-0 mb-3 bg-gradient text-white fs-6 fw-bold d-flex align-items-center">
+                                                    <i class="ri-group-fill fs-4 me-3"></i> {{ teamName }}
+                                                </h2>
+                                                <div class="col-12 col-md-9 col-lg-4 p-3 d-flex align-items-center"
+                                                    v-for="user in team" :key="user.user_full_name"
+                                                    @click="viewProfile(user)">
+                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo"
+                                                        alt="Profile"
+                                                        class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
+                                                        v-if="user.user_photo.includes('assets/profile')">
+                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
+                                                        alt="Profile"
+                                                        class="rounded-circle float-start me-3 p-1 border border-2 border-primary"
+                                                        v-else>
+                                                    <h6 class="m-0">{{ user.user_full_name }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tab-pane fade pt-3" id="profile-kudos">
+                                        <div class="container p-0 p-md-3 position-relative" v-if="this.kudosList.length > 0">
+                                            <div id="carouselKudos" class="carousel slide pointer-event p-3" data-bs-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': isActive(index) }">
+                                                        <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-1 px-md-3 px-lg-5">
+                                                            <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5">
+                                                                <div class="col-auto d-flex flex-column justify-content-center align-items-center user-select-none"
+                                                                    v-for="(user, index) in item.users" :key="index"
+                                                                    @click="viewProfile(user)">
+                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo" alt="Profile"
+                                                                        class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                        v-if="user.user_photo.includes('assets/profile')">
+                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
+                                                                        alt="Profile"
+                                                                        class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                        v-else>
+                                                                    <span class="mt-2 text-primary">{{ user.user_alias_name }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <span class="w-auto">{{ item.message }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev text-primary d-none d-md-flex" data-bs-target="#carouselKudos" data-bs-slide="prev">
+                                                <i class="ri-arrow-left-s-fill" aria-hidden="true"></i>
+                                            </a>
+                                            <a class="carousel-control-next text-primary d-none d-md-flex" data-bs-target="#carouselKudos" data-bs-slide="next">
+                                                <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div class="container" v-else>
+                                            <div class="d-flex justify-content-center align-items-center flex-column text-center">
+                                                <span class="text-secondary">No Kudos Found</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- End Bordered Tabs -->
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </Transition>
 </template>
 
@@ -373,6 +371,23 @@ export default {
             groupedUsers: {},
             kudosList: {},
             activeIndex: 0
+        }
+    },
+    computed: {
+        currentUserRole() {
+            switch (this.$userStore.user.user_level) {
+                case '0' : return 'Unassigned';
+                case '1' : return 'Admin';
+                case '2' : return 'Supervisor';
+                case '3' : return 'Asst. Supervisor';
+                case '4' : return 'Member';
+                case '5' : return 'TSG';
+                case '6' : return 'Supervisor Marketing';
+                case '7' : return 'Member Marketing';
+                case '8' : return 'Team Lead';
+                case '9' : return 'Senior Supervisor';
+                default : return 'Unknown status';
+            }
         }
     },
     mounted() {
@@ -405,7 +420,7 @@ export default {
                             lStore.setObject('user_information', res.data.result);
                         }).then(() => {
                             delay(0)
-                                .then(() => showAlert('alert-success', 'Updated Successful!', 'bi-check-circle-fill'))
+                                .then(() => showAlert('alert-success', 'Updated Success!', 'bi-check-circle-fill'))
                                 .then(() => this.loading = false)
                                 .then(() => {
                                     this.user.password = '';
@@ -435,7 +450,7 @@ export default {
                                 lStore.setObject('user_information', res.data.result);
                             }).then(() => {
                                 delay(0)
-                                    .then(() => showAlert('alert-success', 'Updated Successful!', 'bi-check-circle-fill'))
+                                    .then(() => showAlert('alert-success', 'Updated Success!', 'bi-check-circle-fill'))
                                     .then(() => this.loading = false)
                                     .then(() => {
                                         this.user.password = '';
@@ -502,6 +517,7 @@ export default {
         },
         viewProfile(user) {
             if (user.user_id == this.currentUserId) return;
+
             this.loading = true;
             this.kudosList = {};
             

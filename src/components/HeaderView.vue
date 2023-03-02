@@ -1,24 +1,24 @@
 <template>
-    <header id="header" class="header fixed-top d-flex align-items-center" v-if="this.$userStore.isLoggedIn">
+    <header id="header" class="header fixed-top d-flex align-items-center bg-gradient" v-if="this.$userStore.isLoggedIn">
         <div class="d-flex align-items-center justify-content-between">
             <router-link to="/home" class="logo d-flex align-items-center">
-                <span class="d-none d-lg-block">Orchestra 3.0</span>
+                <span class="logo fw-bolder d-none d-lg-block">Maestro <span class="text-secondary">1.0</span></span>
             </router-link>
-            <i class="bi bi-list toggle-sidebar-btn"></i>
+            <i class="bi bi-list toggle-sidebar-btn" @click="toggleSidebar"></i>
         </div>
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-                <li class="nav-item mode-button dropdown pe-3 m-0">
+                <li class="nav-item mode-button dropdown pe-3 m-0 d-none">
                     <button type="button" id="darkMode" class="btn btn-dark btn-sm rounded-circle d-flex align-item-center"><i class="ri-moon-fill"></i></button>
                     <button type="button" id="lightMode" class="btn btn-warning btn-sm rounded-circle d-flex align-item-center d-none"><i class="ri-sun-line"></i></button>
                 </li>
                 <li class="nav-item dropdown pe-3">
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" @click="toggleClass">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" @click="toggleDropdown">
                         <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo" alt="Profile" class="rounded-circle" v-if="this.$userStore.user.user_photo.includes('assets/profile')">
                         <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo" alt="Profile" class="rounded-circle" v-else>
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ this.$userStore.user.user_alias_name }}</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" :class="{ 'show': isShow }">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" :class="{ 'show': isShowDropdown }">
                         <li class="dropdown-header">
                             <h6>{{ this.$userStore.user.user_alias_name }}</h6>
                             <span>{{ this.$userStore.user.team_name }}</span>
@@ -27,7 +27,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <router-link class="dropdown-item d-flex align-items-center" to="/profile" @click="toggleClass">
+                            <router-link class="dropdown-item d-flex align-items-center" to="/profile" @click="toggleDropdown">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </router-link>
@@ -52,7 +52,8 @@ import { delay, showAlert } from '@/controller';
 export default {
     data() {
         return {
-            isShow: false
+            isShowSidebar: true,
+            isShowDropdown: false
         };
     },
     mounted() {
@@ -90,14 +91,17 @@ export default {
         // console.log(this.$userStore.user);
     },
     methods: {
-        toggleClass() {
-            this.isShow = !this.isShow;
+        toggleSidebar() {
+            document.body.classList.toggle('toggle-sidebar');
+        },
+        toggleDropdown() {
+            this.isShowDropdown = !this.isShowDropdown;
         },
         logout() {
             delay(0)
             .then(() => {
                 delay(0)
-                    .then(() => showAlert('alert-success', 'Logout Successful!', 'bi-check-circle-fill'))
+                    .then(() => showAlert('alert-success', 'Logout Success!', 'bi-check-circle-fill'))
                     .then(() => this.$router.push('/login'));
             })
             .then(() => {
@@ -112,6 +116,9 @@ export default {
 </script>
 
 <style scoped>
+.logo {
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+}
 .show {
     position: absolute;
     inset: 0px 0px auto auto;
