@@ -6,6 +6,7 @@ export const useUserStore = defineStore({
     state: () => ({
         user: null,
         isLoggedIn: false,
+        isSidebarClicked: false
     }),
     actions: {
         setUser(user) {
@@ -22,6 +23,9 @@ export const useUserStore = defineStore({
                 this.user = user;
                 this.isLoggedIn = true;
             }
+        },
+        sidebarClick() {
+            this.isSidebarClicked = true;
         }
     },
 });

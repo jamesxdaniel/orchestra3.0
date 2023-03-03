@@ -49,8 +49,12 @@ body.dark {
 	--button-bg-color: #ffc107;
 }
 
+#alert {
+	z-index: 999;
+}
+
 .alert {
-	min-width: 300px;
+	min-width: 320px;
 	z-index: 999;
 }
 
@@ -62,7 +66,7 @@ main {
 	min-height: 1000px;
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-width: 767.98px) {
 	div.alert {
 		width: 90% !important;
 		margin-left: auto !important;
@@ -70,5 +74,29 @@ main {
 		left: 0 !important;
 		right: 0 !important;
 		font-size: 14px !important;
+	}
+
+	.nav.nav-tabs.nav-tabs-bordered {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+	}
+
+	.nav.nav-tabs.nav-tabs-bordered li {
+		width: 50%;
+		padding: 0 0.25em;
+		margin-bottom: 0.5em;
+	}
+
+	.nav.nav-tabs.nav-tabs-bordered li button {
+		width: 100%;
+		padding: 1em;
+		border-bottom: 2px solid var(--text-color);
+		border-radius: 0;
+	}
+
+	.nav.nav-tabs.nav-tabs-bordered li button.active {
+		background-color: #cfe2ff !important;
+		border-bottom: 2px solid var(--bs-primary);
 	}
 }

@@ -1,4 +1,5 @@
 <template>
+  <div id="alert"></div>
   <div class="container-fluid">
     <RouterView />
   </div>

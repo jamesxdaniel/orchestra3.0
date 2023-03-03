@@ -2,7 +2,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center bg-gradient" v-if="this.$userStore.isLoggedIn">
         <div class="d-flex align-items-center justify-content-between">
             <router-link to="/home" class="logo d-flex align-items-center">
-                <span class="logo fw-bolder d-none d-lg-block">Maestro <span class="text-secondary">1.0</span></span>
+                <span class="logo fw-bolder d-none d-lg-block">{{ isClicked }} <span class="text-secondary">3.0</span></span>
             </router-link>
             <i class="bi bi-list toggle-sidebar-btn" @click="toggleSidebar"></i>
         </div>
@@ -47,7 +47,7 @@
 
 <script>
 import { useUserStore } from '@/store';
-import { delay, showAlert } from '@/controller';
+import { delay, showToast } from '@/controller';
 
 export default {
     data() {
@@ -55,6 +55,12 @@ export default {
             isShowSidebar: true,
             isShowDropdown: false
         };
+    },
+    setup() {
+        const userStore = useUserStore();
+        return {
+            isClicked: userStore.isSidebarClicked,
+        }
     },
     mounted() {
         const darkMode = document.getElementById('darkMode');
@@ -101,7 +107,7 @@ export default {
             delay(0)
             .then(() => {
                 delay(0)
-                    .then(() => showAlert('alert-success', 'Logout Success!', 'bi-check-circle-fill'))
+                    .then(() => showToast('You have successfully logged out', 'alert-success'))
                     .then(() => this.$router.push('/login'));
             })
             .then(() => {

@@ -4,7 +4,7 @@
 			<div class="d-flex flex-column w-100">
 				<img src="@/assets/img/logo.svg" alt="Proweaver" class="logo mx-auto mb-5">
 				<div class="main-card">
-					<h1 class="text-light text-center fs-2 fw-bolder p-0 mb-4">Maestro <span class="text-secondary">1.0</span></h1>
+					<h1 class="text-light text-center fs-2 fw-bolder p-0 mb-4">Orchestra <span class="text-secondary">3.0</span></h1>
 					<div class="card w-100 m-auto mb-4">
 						<div class="card-body px-4">
 							<span class="d-block text-primary text-center fw-bold py-3 py-md-4">Sign in to start your session</span>
@@ -42,7 +42,7 @@
 
 <script>
 import axios from 'axios';
-import { lStore, delay, showAlert } from '@/controller';
+import { lStore, delay, showToast } from '@/controller';
 import { useUserStore } from '@/store.js';
 
 export default {
@@ -69,18 +69,18 @@ export default {
 					})
 					.then(() => {
 						delay(0)
-						.then(() => showAlert('alert-success', 'Login Success!', 'bi-check-circle-fill'))
-						.then(() => this.$router.push('/home'))
-						.then(() => this.loading = false);
+						.then(() => showToast('You have successfully logged in', 'alert-success'))
+						.then(() => this.loading = false)
+						.then(() => this.$router.push('/home'));
 					});
 				} else {
 					delay(0)
-					.then(() => showAlert('alert-danger', data.msg, 'bi-exclamation-circle-fill'))
+					.then(() => showToast(data.msg, 'alert-danger'))
 					.then(() => this.loading = false);
 				}
 			}).catch((err)=>{
 				delay(0)
-					.then(() => showAlert('alert-danger', err.message, 'bi-exclamation-circle-fill'))
+					.then(() => showToast(err.msg, 'alert-danger'))
 					.then(() => this.loading = false);
 			});
 		}

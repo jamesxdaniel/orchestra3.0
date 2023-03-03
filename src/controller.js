@@ -39,69 +39,105 @@ function removeFix(object, fix) {
 
 const delay = t => new Promise(resolve => setTimeout(resolve, t));
 
-function showAlert(alertType, alertText, alertIcon) {
-    // Create the alert element with Bootstrap classes
-    const alertDiv = document.createElement('div');
-    alertDiv.classList.add('position-fixed', 'top-0', 'end-0', 'mt-3', 'me-3', 'alert', 'animate__animated', 'animate__fadeInDown', alertIcon, alertType);
+function showToast(alertMessage, alertType = 'alert-info', alertLoader = false) {
+    // Create the alert element
+    const alertContainerElement = document.querySelector('#alert');
+    alertContainerElement.classList.add('position-fixed', 'top-0', 'end-0', 'me-3');
 
-    // Add the message to the alert element
-    alertDiv.textContent = alertText;
-    document.body.appendChild(alertDiv);
-
-    // Hide the alert on the page
-    setTimeout(() => alertDiv.classList.add('animate__fadeOutUp'), 2000);
-    setTimeout(() => alertDiv.remove(), 3000);
-};
-
-function showAlertWithSpinner() {
-    // Create the alert element with Bootstrap classes
+    // Create the alert element
     const alertElement = document.createElement('div');
-    alertElement.classList.add('position-fixed', 'top-0', 'end-0', 'mt-3', 'me-3', 'alert', 'alert-info', 'd-flex', 'align-items-center', 'animate__animated');
+    alertElement.classList.add('position-static', 'mt-3', 'alert', alertType, 'd-flex', 'align-items-center', 'animate__animated');
     alertElement.setAttribute('role', 'alert');
 
-    // Create the spinner element with Bootstrap classes
+    // Create the spinner element
     const spinnerElement = document.createElement('span');
-    spinnerElement.classList.add('spinner-border', 'spinner-border-sm', 'me-3');
+    spinnerElement.classList.add('spinner', 'spinner-border', 'spinner-border-sm');
     spinnerElement.setAttribute('role', 'status');
     spinnerElement.setAttribute('aria-hidden', 'true');
 
-    // Create the check element with Bootstrap classes
-    const checkElement = document.createElement('span');
-    checkElement.classList.add('ri-checkbox-circle-fill', 'me-3');
-    checkElement.setAttribute('role', 'status');
-    checkElement.setAttribute('aria-hidden', 'true');
-    checkElement.style.display = 'none';
+    // Create the info icon element
+    const infoElement = document.createElement('span');
+    infoElement.classList.add('ri', 'ri-message-fill');
+    infoElement.setAttribute('role', 'status');
+    infoElement.setAttribute('aria-hidden', 'true');
+    infoElement.style.display = 'inline';
+
+    // Create the success icon element
+    const successElement = document.createElement('span');
+    successElement.classList.add('ri', 'ri-checkbox-circle-fill');
+    successElement.setAttribute('role', 'status');
+    successElement.setAttribute('aria-hidden', 'true');
+    if (alertLoader == true) successElement.style.display = 'none';
+    else successElement.style.display = 'inline';
+
+    // Create the error icon element
+    const errorElement = document.createElement('span');
+    errorElement.classList.add('ri', 'ri-error-warning-fill');
+    errorElement.setAttribute('role', 'status');
+    errorElement.setAttribute('aria-hidden', 'true');
+    errorElement.style.display = 'inline';
+
+    // Create the heading element
+    const headingElement = document.createElement('h4');
+    headingElement.classList.add('alert-heading', 'fs-6', 'fw-bolder', 'm-0', 'mb-1');
+    if (alertType == 'alert-info') headingElement.textContent = 'Info';
+    if (alertType == 'alert-success') headingElement.textContent = 'Success';
+    if (alertType == 'alert-danger') headingElement.textContent = 'Error';
 
     // Create the message element
-    const messageElement = document.createTextNode('Loading data');
+    const messageElement = document.createElement('span');
+    messageElement.textContent = alertMessage;
 
-    // Add the spinner and message to the alert element
-    alertElement.appendChild(spinnerElement);
-    alertElement.appendChild(checkElement);
-    alertElement.appendChild(messageElement);
+    // Create the icon container element
+    const icontainerElement = document.createElement('div');
+    icontainerElement.classList.add('alert-icon', 'd-flex', 'align-items-center', 'me-3');
+    if (alertLoader == true) icontainerElement.appendChild(spinnerElement);
+    if (alertLoader == true) icontainerElement.appendChild(successElement);
+    if (alertType == 'alert-info' && alertLoader == false) icontainerElement.appendChild(infoElement);
+    if (alertType == 'alert-success') icontainerElement.appendChild(successElement);
+    if (alertType == 'alert-danger') icontainerElement.appendChild(errorElement);
+
+    // Create the text container element
+    const containerElement = document.createElement('div');
+    containerElement.classList.add('alert-container', 'w-100', 'm-0');
+    containerElement.appendChild(headingElement);
+    containerElement.appendChild(messageElement);
+
+    // Add the spinner, message, and progress bar to the alert element
+    alertElement.appendChild(icontainerElement);
+    alertElement.appendChild(containerElement);
 
     // Show the alert on the page
-    document.body.appendChild(alertElement);
+    alertContainerElement.insertBefore(alertElement, alertContainerElement.firstChild);
 
-    // Return an object with show and hide methods to allow manual control
-    var alertObject = {
+    // Return an object with hide method to allow manual control
+    const alertObject = {
         show: function () {
-            alertElement.classList.add('animate__fadeInDown');
+            alertElement.classList.add('animate__fadeIn');
             return alertObject;
         },
         hide: function () {
             setTimeout(() => {
                 spinnerElement.style.display = 'none';
-                checkElement.style.display = 'inline';
-                messageElement.textContent = 'Loading complete';
+                successElement.style.display = 'inline';
+                messageElement.textContent = alertMessage + ' ' + 'complete';
                 alertElement.classList.remove('alert-info');
                 alertElement.classList.add('alert-success');
             }, 500);
-            setTimeout(() => alertElement.classList.add('animate__fadeOutUp'), 2000);
-            setTimeout(() => alertElement.remove(), 3000);
+            setTimeout(() => alertElement.classList.add('animate__fadeOut'), 1500);
+            setTimeout(() => alertElement.remove(), 2500);
             return alertObject;
         }
     };
+
+    // Hide the alert automatically if alertLoader is false
+    if (!alertLoader) {
+        alertElement.classList.add('animate__fadeIn');
+        setTimeout(() => {
+            alertElement.classList.add('animate__fadeOut');
+            setTimeout(() => alertElement.remove(), 1500);
+        }, 2500);
+    }
 
     // Return the alert object
     return alertObject;
@@ -111,7 +147,7 @@ function scrollToTop() {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
-    })
+    });
 };
 
 function cleanText(text) {
@@ -133,14 +169,13 @@ function cleanText(text) {
     });
 
     return cleaner.trim();
-}
+};
 
 export {
     lStore,
     removeFix,
     delay,
-    showAlert,
     scrollToTop,
-    showAlertWithSpinner,
+    showToast,
     cleanText
 };

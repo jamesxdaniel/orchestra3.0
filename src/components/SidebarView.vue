@@ -3,9 +3,21 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <router-link to="/home" class="nav-link">
+                <router-link to="/home" class="nav-link" @click="sidebarClick">
                     <i class="ri-home-3-line"></i>
                     <span>Home</span>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/clients" class="nav-link" @click="sidebarClick">
+                    <i class="ri-briefcase-line"></i>
+                    <span>Clients</span>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/tasks" class="nav-link" @click="sidebarClick">
+                    <i class="ri-pages-line"></i>
+                    <span>Tasks</span>
                 </router-link>
             </li>
 
@@ -14,7 +26,16 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store';
 
+export default {
+    methods: {
+        sidebarClick() {
+            const userStore = useUserStore();
+            userStore.sidebarClick();
+        }
+    }
+};
 </script>
 
 <style scoped></style>

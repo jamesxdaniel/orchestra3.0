@@ -63,13 +63,10 @@
 
                                 <div class="tab-content pt-2">
 
-                                    <div class="tab-pane fade pt-3 show active" id="profile-teammates">
+                                    <div class="tab-pane fade profile-teammates show active" id="profile-teammates">
+                                        <h5 class="card-title d-flex align-items-center"><i class="ri-team-fill me-2"></i> {{ this.loadedUser.main_team_name }}</h5>
 
-                                        <div class="profile-teammates container">
-                                            <h3
-                                                class="d-flex justify-content-center align-items-center text-primary fs-3 fw-bold mb-4">
-                                                <i class="ri-team-fill me-2"></i> {{ this.loadedUser.main_team_name }}
-                                            </h3>
+                                        <div class="profile-teammates-container px-3">
                                             <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
                                                 :key="teamName">
                                                 <h2
@@ -94,7 +91,7 @@
 
                                     </div>
 
-                                    <div class="tab-pane fade pt-3" id="profile-kudos">
+                                    <div class="tab-pane fade profile-kudos" id="profile-kudos">
                                         <div class="container p-0 p-md-3 position-relative" v-if="this.kudosList.length > 0">
                                             <div id="carouselKudos" class="carousel slide pointer-event p-3" data-bs-ride="carousel">
                                                 <div class="carousel-inner">
@@ -149,7 +146,7 @@
 <script>
 import HeaderView from '@/components/HeaderView.vue';
 import SidebarView from '@/components/SidebarView.vue';
-import { lStore, delay, scrollToTop, showAlertWithSpinner, cleanText } from '@/controller';
+import { lStore, delay, scrollToTop, showToast, cleanText } from '@/controller';
 import axios from 'axios';
 
 export default {
@@ -226,7 +223,7 @@ export default {
             this.loading = true;
             this.kudosList = {};
             
-            const alert = showAlertWithSpinner().show();
+            const toast = showToast('Loading profile', 'alert-info', true).show();
             delay(0)
                 .then(() => lStore.setObject('view_profile', user))
                 .then(() => this.loadedUser = user)
@@ -234,7 +231,7 @@ export default {
                     if (user.user_id == this.$userStore.user.user_id) {
                         this.$router.push('/profile').then(() => {
                             this.loading = false;
-                            alert.hide();
+                            toast.hide();
                             delay(0).then(() => scrollToTop());
                         });
                     } else {
@@ -242,7 +239,7 @@ export default {
                             this.loadKudos().then((res) => {
                                 if (res.length <= 0) this.kudosList.length = 0;
                                 this.loading = false;
-                                alert.hide();
+                                toast.hide();
                                 delay(0).then(() => scrollToTop());
                             });
                         });
@@ -294,20 +291,20 @@ export default {
     color: transparent;
 }
 
-.profile-teammates>*:hover, .carousel div.col-auto:hover {
+.profile-teammates-container>*:hover, .carousel div.col-auto:hover {
     cursor: pointer;
 }
 
-.profile-teammates>div>div:hover h6, .carousel div.col-auto:hover span {
+.profile-teammates-container>div>div:hover h6, .carousel div.col-auto:hover span {
     opacity: 0.6;
     color: var(--text-color-link);
 }
 
-.profile-teammates>div>div:hover img, .carousel div.col-auto:hover img {
+.profile-teammates-container>div>div:hover img, .carousel div.col-auto:hover img {
     opacity: 0.6;
 }
 
-.profile-teammates img {
+.profile-teammates-container img {
     width: 50px;
     height: 50px;
     object-fit: cover;
