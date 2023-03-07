@@ -26,13 +26,12 @@
 </template>
 
 <script>
-import { useUserStore } from '@/store';
-
 export default {
     methods: {
         sidebarClick() {
-            const userStore = useUserStore();
-            userStore.sidebarClick();
+            if (window.innerWidth <= 768) {
+                document.body.classList.toggle('toggle-sidebar');
+            }
         }
     }
 };

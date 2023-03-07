@@ -6,7 +6,7 @@
 
 			<div class="pagetitle">
 				<h1>Home</h1>
-			</div><!-- End Page Title -->
+			</div>
 
 			<section class="section dashboard">
 				<!-- Right side columns -->
@@ -99,12 +99,7 @@ import SidebarView from '@/components/SidebarView.vue';
 export default {
 	components: { HeaderView, SidebarView },
 	data() {
-		return {
-			isShow: false
-		};
-	},
-	mounted() {
-		// if (this.$router.options.history.state.back == '/login')
+		return {};
 	}
 };
 </script>

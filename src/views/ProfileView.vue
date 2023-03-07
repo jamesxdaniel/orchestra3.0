@@ -6,10 +6,11 @@
 
             <div class="pagetitle">
                 <h1>My Profile</h1>
-            </div><!-- End Page Title -->
+            </div>
 
             <section class="section profile">
                 <div class="row">
+
                     <div class="col-xl-4">
 
                         <div class="card border-3 border-top border-primary">
@@ -135,17 +136,17 @@
                                             <div class="row mb-3">
                                                 <label for="profileImage"
                                                     class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-8 col-lg-9 d-flex align-items-center">
                                                     <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
                                                         alt="Profile"
-                                                        class="rounded-circle p-1 border border-3 border-primary"
+                                                        class="rounded-circle p-1 border border-3 border-primary me-3"
                                                         v-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('assets/profile')">
                                                     <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo"
                                                         alt="Profile"
-                                                        class="rounded-circle p-1 border border-3 border-primary"
+                                                        class="rounded-circle p-1 border border-3 border-primary me-3"
                                                         v-else-if="this.imageUrl == null && this.$userStore.user.user_photo.includes('filesystem')">
                                                     <img :src="this.imageUrl" alt="Profile"
-                                                        class="rounded-circle p-1 border border-3 border-primary"
+                                                        class="rounded-circle p-1 border border-3 border-primary me-3"
                                                         v-else>
                                                     <div class="pt-2">
                                                         <input type="file" id="openFile" hidden @change="onImageChange">
@@ -297,11 +298,11 @@
 
                                     <div class="tab-pane fade profile-kudos" id="profile-kudos">
                                         <div class="container p-0 p-md-3 position-relative" v-if="this.kudosList.length > 0">
-                                            <div id="carouselKudos" class="carousel slide pointer-event p-3" data-bs-ride="carousel">
+                                            <div id="carouselKudos" class="carousel slide pointer-event p-3 px-0 px-md-3" data-bs-ride="carousel">
                                                 <div class="carousel-inner">
                                                     <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': isActive(index) }">
                                                         <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-1 px-md-3 px-lg-5">
-                                                            <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5">
+                                                            <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5 px-3 px-md-0">
                                                                 <div class="col-auto d-flex flex-column justify-content-center align-items-center user-select-none"
                                                                     v-for="(user, index) in item.users" :key="index"
                                                                     @click="viewProfile(user)">
@@ -340,6 +341,7 @@
                         </div>
 
                     </div>
+                    
                 </div>
             </section>
 
@@ -348,9 +350,9 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/store';
 import HeaderView from '@/components/HeaderView.vue';
 import SidebarView from '@/components/SidebarView.vue';
-import { useUserStore } from '@/store';
 import { lStore, delay, showToast, scrollToTop, cleanText } from '@/controller';
 import axios from 'axios';
 
@@ -371,6 +373,10 @@ export default {
             activeIndex: 0
         }
     },
+	setup() {
+		const userStore = useUserStore();
+		return { userStore };
+	},
     computed: {
         currentUserRole() {
             switch (this.$userStore.user.user_level) {
@@ -413,8 +419,7 @@ export default {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/Usercontroller/editUser?userid=${this.$userStore.user.user_id}&password=${this.user.password}&confirmpassword=${this.user.confirm_password}&zimbraemail=${this.user.zimbra_email}&gmailemail=${this.user.gmail_email}&skypename=${this.user.skype_name}&webmail=${this.user.emailer_email}&emaileremail=${this.user.emailer_email}&contactnumber=${this.user.contact_number}`).then((res) => {
                     if (res.data.success) {
                         delay(0).then(() => {
-                            const userStore = useUserStore();
-                            userStore.setUser(res.data.result);
+                            this.userStore.setUser(res.data.result);
                             lStore.setObject('user_information', res.data.result);
                         }).then(() => {
                             delay(0)
@@ -443,8 +448,7 @@ export default {
                     axios.post(`http://ns.proweaver.host/nsorchestra/api/Usercontroller/editUser?userid=${this.$userStore.user.user_id}&password=${this.user.password}&confirmpassword=${this.user.confirm_password}&zimbraemail=${this.user.zimbra_email}&gmailemail=${this.user.gmail_email}&skypename=${this.user.skype_name}&webmail=${this.user.emailer_email}&emaileremail=${this.user.emailer_email}&contactnumber=${this.user.contact_number}`).then((res) => {
                         if (res.data.success) {
                             delay(0).then(() => {
-                                const userStore = useUserStore();
-                                userStore.setUser(res.data.result);
+                                this.userStore.setUser(res.data.result);
                                 lStore.setObject('user_information', res.data.result);
                             }).then(() => {
                                 delay(0)

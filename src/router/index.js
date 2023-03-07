@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '@/store';
+import { useUserStore } from '@/store/store';
 import { lStore } from '@/controller';
 
 const router = createRouter({
@@ -18,6 +18,34 @@ const router = createRouter({
 			path: '/home',
 			name: 'home',
 			component: () => import('@/views/HomeView.vue')
+		},
+		{
+			path: '/clients',
+			name: 'clients',
+			component: () => import('@/views/ClientsView/ClientsView.vue'),
+			children: [
+				{
+					path: '/clients',
+					name: 'clientslist',
+					component: () => import('@/views/ClientsView/ClientsListView.vue'),
+				},
+				{
+					path: '/clients/info',
+					name: 'clientsinfo',
+					component: () => import('@/views/ClientsView/ClientsInfoView.vue'),
+					beforeEnter: () => {
+						return new Promise((resolve, reject) => {
+							const scroll = setTimeout(() => window.scrollTo(0, 0), 300);
+							resolve(scroll);
+						});
+					}
+				}
+			]
+		},
+		{
+			path: '/tasks',
+			name: 'tasks',
+			component: () => import('@/views/TasksView.vue')
 		},
 		{
 			path: '/profile',

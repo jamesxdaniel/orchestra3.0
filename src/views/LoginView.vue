@@ -4,7 +4,7 @@
 			<div class="d-flex flex-column w-100">
 				<img src="@/assets/img/logo.svg" alt="Proweaver" class="logo mx-auto mb-5">
 				<div class="main-card">
-					<h1 class="text-light text-center fs-2 fw-bolder p-0 mb-4">Orchestra <span class="text-secondary">3.0</span></h1>
+					<h1 class="text-light text-center fs-2 fw-bolder p-0 mb-4">{{ this.$userStore.companyName }} <span class="text-secondary">3.0</span></h1>
 					<div class="card w-100 m-auto mb-4">
 						<div class="card-body px-4">
 							<span class="d-block text-primary text-center fw-bold py-3 py-md-4">Sign in to start your session</span>
@@ -30,7 +30,7 @@
 						</div>
 					</div>
 					<div class="note text-center p-0 text-muted">
-						<p class="m-0">The Proweaver Orchestra is an exclusive tool for use by Proweaver employees only.
+						<p class="m-0">The Proweaver {{ this.$userStore.companyName }} is an exclusive tool for use by Proweaver employees only.
 							Please do not disclose any information to third parties such as clients or potential clients.
 						</p>
 					</div>
@@ -43,7 +43,7 @@
 <script>
 import axios from 'axios';
 import { lStore, delay, showToast } from '@/controller';
-import { useUserStore } from '@/store.js';
+import { useUserStore } from '@/store/store';
 
 export default {
 	data() {
@@ -53,18 +53,21 @@ export default {
 			loading: false
 		};
 	},
+	setup() {
+		const userStore = useUserStore();
+		return { userStore };
+	},
 	methods: {
 		login() {
 			this.loading = true;
 
-			axios.get(`http://ns.proweaver.host/nsorchestra/api/usercontroller/AuthUser?email=${this.email}&password=${this.password}`).then(({ data }) => {
+			axios.get(`http://ns.proweaver.host/nsorchestra/api/Usercontroller/AuthUser?email=${this.email}&password=${this.password}`).then(({ data }) => {
 				if (data.msg == null) return;
 				else if (data.success == true) {
 					console.log(data.result);
 					delay(0)
 					.then(() => {
-						const userStore = useUserStore();
-						userStore.setUser(data.result[0]);
+						this.userStore.setUser(data.result[0]);
 						lStore.setObject('user_information', data.result[0]);
 					})
 					.then(() => {

@@ -6,7 +6,7 @@
 
             <div class="pagetitle">
                 <h1>Profile</h1>
-            </div><!-- End Page Title -->
+            </div>
 
             <section class="section profile">
                 <div class="row">
@@ -93,11 +93,11 @@
 
                                     <div class="tab-pane fade profile-kudos" id="profile-kudos">
                                         <div class="container p-0 p-md-3 position-relative" v-if="this.kudosList.length > 0">
-                                            <div id="carouselKudos" class="carousel slide pointer-event p-3" data-bs-ride="carousel">
+                                            <div id="carouselKudos" class="carousel slide pointer-event p-3 px-0 px-md-3" data-bs-ride="carousel">
                                                 <div class="carousel-inner">
                                                     <div class="carousel-item" v-for="(item, index) in this.kudosList" :class="{ 'active': isActive(index) }">
                                                         <div class="d-flex justify-content-center align-items-center flex-column text-center h-100 px-1 px-md-3 px-lg-5">
-                                                            <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5">
+                                                            <div class="row justify-content-center align-items-center w-auto mb-3 mb-md-4 g-3 g-md-5 px-3 px-md-0">
                                                                 <div class="col-auto d-flex flex-column justify-content-center align-items-center user-select-none"
                                                                     v-for="(user, index) in item.users" :key="index"
                                                                     @click="viewProfile(user)">

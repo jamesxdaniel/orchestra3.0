@@ -171,11 +171,39 @@ function cleanText(text) {
     return cleaner.trim();
 };
 
+function formatDate(dateStr) {
+    // Create a Date object from the input string
+    const date = new Date(dateStr);
+
+    // Get the month name and day of the month from the Date object
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+
+    // Get the year from the Date object
+    const year = date.getFullYear();
+
+    // Construct the formatted date string
+    const formattedDate = `${monthNames[monthIndex]} ${day}, ${year}`;
+
+    return formattedDate;
+};
+
+function tooltipConfig() {
+    // Initialize the tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    
+    return tooltipList;
+};
+
 export {
     lStore,
     removeFix,
     delay,
     scrollToTop,
     showToast,
-    cleanText
+    cleanText,
+    formatDate,
+    tooltipConfig
 };

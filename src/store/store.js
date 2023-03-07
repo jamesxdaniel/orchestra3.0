@@ -5,8 +5,12 @@ export const useUserStore = defineStore({
     id: 'userStore',
     state: () => ({
         user: null,
+        client: null,
+        clientList: [],
+        currentClientListPage: 1,
+        totalClients: null,
+        companyName: 'Orchestra',
         isLoggedIn: false,
-        isSidebarClicked: false
     }),
     actions: {
         setUser(user) {
@@ -24,8 +28,17 @@ export const useUserStore = defineStore({
                 this.isLoggedIn = true;
             }
         },
-        sidebarClick() {
-            this.isSidebarClicked = true;
+        setClientList(clientList) {
+            this.clientList = clientList
+        },
+        setCurrentClientListPage(page) {
+            this.currentClientListPage = page
+        },
+        setTotalClient(totalClients) {
+            this.totalClients = totalClients
+        },
+        viewClientInfo(client) {
+            this.client = client;
         }
     },
 });

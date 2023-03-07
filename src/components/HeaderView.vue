@@ -2,7 +2,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center bg-gradient" v-if="this.$userStore.isLoggedIn">
         <div class="d-flex align-items-center justify-content-between">
             <router-link to="/home" class="logo d-flex align-items-center">
-                <span class="logo fw-bolder d-none d-lg-block">{{ isClicked }} <span class="text-secondary">3.0</span></span>
+                <span class="logo fw-bolder d-none d-lg-block">{{ this.$userStore.companyName }} <span class="text-secondary">3.0</span></span>
             </router-link>
             <i class="bi bi-list toggle-sidebar-btn" @click="toggleSidebar"></i>
         </div>
@@ -46,22 +46,19 @@
 </template>
 
 <script>
-import { useUserStore } from '@/store';
+import { useUserStore } from '@/store/store';
 import { delay, showToast } from '@/controller';
 
 export default {
     data() {
         return {
-            isShowSidebar: true,
             isShowDropdown: false
         };
     },
-    setup() {
-        const userStore = useUserStore();
-        return {
-            isClicked: userStore.isSidebarClicked,
-        }
-    },
+	setup() {
+		const userStore = useUserStore();
+		return { userStore };
+	},
     mounted() {
         const darkMode = document.getElementById('darkMode');
         const lightMode = document.getElementById('lightMode');
@@ -111,8 +108,7 @@ export default {
                     .then(() => this.$router.push('/login'));
             })
             .then(() => {
-                const userStore = useUserStore();
-                userStore.clearUser();
+                this.userStore.clearUser();
                 localStorage.removeItem('user_information');
                 localStorage.removeItem('view_profile');
             });
