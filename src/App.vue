@@ -1,14 +1,19 @@
 <template>
 	<div id="alert"></div>
-	<RouterView />
+	<div class="container-fluid">
+		<RouterView />
+	</div>
+	<FooterView v-if="this.$route.path != '/login'"/>
 </template>
 
 <script>
+import FooterView from '@/components/FooterView.vue';
 import { RouterView } from 'vue-router';
 import { lStore } from '@/controller';
 import { useUserStore } from '@/store/store';
 
 export default {
+	components: { FooterView },
 	setup() {
 		const userStore = useUserStore();
 		return { userStore };

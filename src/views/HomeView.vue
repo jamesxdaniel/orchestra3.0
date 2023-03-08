@@ -90,16 +90,14 @@
 
 		</main>
 	</Transition>
-	<FooterView />
 </template>
   
 <script>
 import HeaderView from '@/components/HeaderView.vue';
 import SidebarView from '@/components/SidebarView.vue';
-import FooterView from '@/components/FooterView.vue';
 
 export default {
-	components: { HeaderView, SidebarView, FooterView },
+	components: { HeaderView, SidebarView },
 	data() {
 		return {};
 	}

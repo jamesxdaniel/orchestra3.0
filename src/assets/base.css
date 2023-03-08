@@ -99,4 +99,8 @@ main {
 		background-color: #cfe2ff !important;
 		border-bottom: 2px solid var(--bs-primary);
 	}
+
+	.footer {
+		flex-flow: column wrap;
+	}
 }
