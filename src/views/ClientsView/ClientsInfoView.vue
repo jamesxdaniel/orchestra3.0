@@ -14,6 +14,11 @@
 export default {
 	created() {
 		if (this.$userStore.client == null) this.$router.go(-1);
+	},
+	methods: {
+		getClientInfo() {
+			
+		}
 	}
 };
 </script>

@@ -55,12 +55,12 @@
 													type="button"
 													class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-warning me-1"
 													data-bs-toggle="tooltip"
-													data-bs-title="Tickets"><i class="ri-ticket-2-fill"></i></button>
+													data-bs-title="Tickets"><i class="ri-ticket-fill"></i></button>
 												<button
 													type="button"
 													class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-primary me-1"
 													data-bs-toggle="tooltip"
-													data-bs-title="Tasks"><i class="ri-todo-fill"></i></button>
+													data-bs-title="Tasks"><i class="ri-window-fill"></i></button>
 												<button
 													type="button"
 													class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-success" 
@@ -70,16 +70,16 @@
 										</tr>
 									</tbody>
 								</table>
-								<ul class="pagination">
+								<ul class="pagination" v-if="this.$userStore.clientList.length > 0">
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage <= 1 }">
-										<a class="page-link" href="#" @click.prevent="previousPage">&laquo;</a>
+										<a class="page-link" href="#" @click.prevent="previousPage">&laquo; Previous</a>
 									</li>
 									<li v-for="page in displayedPages" :key="page" class="page-item"
 										:class="{ 'active': this.$userStore.currentClientListPage === page }">
 										<a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
 									</li>
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage >= pageCount }">
-										<a class="page-link" href="#" @click.prevent="nextPage">&raquo;</a>
+										<a class="page-link" href="#" @click.prevent="nextPage">Next &raquo;</a>
 									</li>
 								</ul>
 								<!-- End Table -->
@@ -113,6 +113,7 @@ export default {
 		return { userStore };
 	},
 	mounted() {
+		this.tooltipConfig();
 		if (this.$userStore.clientList.length <= 0) this.getClients();
 	},
 	methods: {

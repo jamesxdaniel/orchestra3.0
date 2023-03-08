@@ -60,37 +60,7 @@ export default {
 		return { userStore };
 	},
     mounted() {
-        const darkMode = document.getElementById('darkMode');
-        const lightMode = document.getElementById('lightMode');
-        const body = document.body;
-
-        darkMode.addEventListener('click', () => {
-            body.classList.add('dark');
-            body.classList.remove('light'); 
-            darkMode.classList.add('d-none');
-            lightMode.classList.remove('d-none');
-            localStorage.setItem('theme', 'dark');
-        });
-
-        lightMode.addEventListener('click', () => {
-            body.classList.add('light');
-            body.classList.remove('dark');
-            lightMode.classList.add('d-none');
-            darkMode.classList.remove('d-none');
-            localStorage.setItem('theme', 'light');
-        });
-
-        if (localStorage.getItem('theme') === 'dark') {
-            body.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            body.classList.add('light');
-            localStorage.setItem('theme', 'light');
-        }
-
-        darkMode.classList.toggle('d-none', localStorage.getItem('theme') === 'dark');
-        lightMode.classList.toggle('d-none', localStorage.getItem('theme') === 'light');
-
+        // this.themeSet();
         // console.log(this.$userStore.user);
     },
     methods: {
@@ -99,6 +69,38 @@ export default {
         },
         toggleDropdown() {
             this.isShowDropdown = !this.isShowDropdown;
+        },
+        themeSet() {
+            const darkMode = document.getElementById('darkMode');
+            const lightMode = document.getElementById('lightMode');
+            const body = document.body;
+
+            darkMode.addEventListener('click', () => {
+                body.classList.add('dark');
+                body.classList.remove('light'); 
+                darkMode.classList.add('d-none');
+                lightMode.classList.remove('d-none');
+                localStorage.setItem('theme', 'dark');
+            });
+
+            lightMode.addEventListener('click', () => {
+                body.classList.add('light');
+                body.classList.remove('dark');
+                lightMode.classList.add('d-none');
+                darkMode.classList.remove('d-none');
+                localStorage.setItem('theme', 'light');
+            });
+
+            if (localStorage.getItem('theme') === 'dark') {
+                body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            }
+
+            darkMode.classList.toggle('d-none', localStorage.getItem('theme') === 'dark');
+            lightMode.classList.toggle('d-none', localStorage.getItem('theme') === 'light');
         },
         logout() {
             delay(0)

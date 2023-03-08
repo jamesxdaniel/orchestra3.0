@@ -64,13 +64,16 @@
                                     <li class="nav-item">
                                         <button class="nav-link d-flex align-items-center bg-transparent"
                                             data-bs-toggle="tab" data-bs-target="#profile-teammates"
-                                            @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
+                                            @click="loadTeammates(this.$userStore.user.team_id)">
+                                            <i class="ri-team-fill me-2"></i> Teammates
+                                        </button>
                                     </li>
 
                                     <li class="nav-item">
                                         <button class="nav-link d-flex align-items-center bg-transparent"
-                                            data-bs-toggle="tab" data-bs-target="#profile-kudos"><i
-                                                class="ri-thumb-up-fill me-2"></i> Kudos</button>
+                                            data-bs-toggle="tab" data-bs-target="#profile-kudos">
+                                            <i class="ri-thumb-up-fill me-2"></i> Kudos
+                                        </button>
                                     </li>
 
                                 </ul>
@@ -81,50 +84,59 @@
                                         <h5 class="card-title">Profile Details</h5>
 
                                         <div class="row border-bottom pb-3">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-team-fill me-3 fs-5"></i> Team Name</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.team_name }}
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-team-fill me-3 fs-5"></i> Team Name
                                             </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.team_name == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.team_name }}</div>
                                         </div>
 
                                         <div class="row border-bottom pb-3">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-mail-fill me-3 fs-5"></i> Email</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_email }}</div>
-                                        </div>
-
-                                        <div class="row border-bottom pb-3">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-phone-fill me-3 fs-5"></i> Contact Number</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_phone }}</div>
-                                        </div>
-
-                                        <div class="row border-bottom pb-3">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-mail-fill me-3 fs-5"></i> Zimbra Email</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_zimbra_email }}
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-mail-fill me-3 fs-5"></i> Email
                                             </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.user_email == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_email }}</div>
                                         </div>
 
                                         <div class="row border-bottom pb-3">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-google-fill me-3 fs-5"></i> Gmail Email</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_gmail_email }}
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-contacts-book-2-fill me-3 fs-5"></i> Contact Number
                                             </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.user_phone == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_phone }}</div>
                                         </div>
 
                                         <div class="row border-bottom pb-3">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-skype-fill me-3 fs-5"></i> Skype Name</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.user_skype_name }}
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-mail-fill me-3 fs-5"></i> Zimbra Email
                                             </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.user_zimbra_email == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_zimbra_email }}</div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-google-fill me-3 fs-5"></i> Gmail Email
+                                            </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.user_gmail_email == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_gmail_email }}</div>
+                                        </div>
+
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-skype-fill me-3 fs-5"></i> Skype Name
+                                            </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.user_skype_name == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_skype_name }}</div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center"><i
-                                                    class="ri-mail-fill me-3 fs-5"></i> Web Mail</div>
-                                            <div class="col-lg-9 col-md-8">{{ this.$userStore.user.security_email }}
+                                            <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
+                                                <i class="ri-mail-fill me-3 fs-5"></i> Web Mail
                                             </div>
+                                            <div class="col-lg-9 col-md-8" v-if="this.$userStore.user.security_email == ''">&mdash;</div>
+                                            <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.security_email }}</div>
                                         </div>
                                     </div>
 
@@ -269,7 +281,8 @@
                                     </div>
 
                                     <div class="tab-pane fade profile-teammates" id="profile-teammates">
-                                        <h5 class="card-title d-flex align-items-center"><i class="ri-team-fill me-2"></i> {{ this.$userStore.user.team_name }}</h5>
+                                        <h5 class="card-title d-flex align-items-center" v-if="this.$userStore.user.team_name == null"><i class="ri-team-fill me-2"></i> No Team Found</h5>
+                                        <h5 class="card-title d-flex align-items-center" v-else><i class="ri-team-fill me-2"></i> {{ this.$userStore.user.team_name }}</h5>
 
                                         <div class="profile-teammates-container px-3">
                                             <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
@@ -306,10 +319,16 @@
                                                                 <div class="col-auto d-flex flex-column justify-content-center align-items-center user-select-none"
                                                                     v-for="(user, index) in item.users" :key="index"
                                                                     @click="viewProfile(user)">
-                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo" alt="Profile"
+                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo" :alt="user.user_id"
                                                                         class="rounded-circle float-start p-1 border border-3 border-primary"
-                                                                        v-if="user.user_photo.includes('assets/profile')">
-                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
+                                                                        v-if="user.user_id == this.$userStore.user.user_id">
+                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo" :alt="user.user_id"
+                                                                        class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                        v-else-if="user.user_id != this.$userStore.user.user_id && !user.user_photo.includes('assets/profile')">
+                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo" :alt="user.user_id"
+                                                                        class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                        v-else-if="user.user_id != this.$userStore.user.user_id && user.user_photo.includes('assets/profile')">
+                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo"
                                                                         alt="Profile"
                                                                         class="rounded-circle float-start p-1 border border-3 border-primary"
                                                                         v-else>
@@ -328,7 +347,7 @@
                                                 <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
                                             </a>
                                         </div>
-                                        <div class="container" v-else>
+                                        <div class="container py-5" v-else>
                                             <div class="d-flex justify-content-center align-items-center flex-column text-center">
                                                 <span class="text-secondary">No Kudos Found</span>
                                             </div>
@@ -405,7 +424,9 @@ export default {
         this.user.profilepicture = this.selectedImage;
         // console.log(this.user);
 
-        this.loadTeammates();
+        if (this.$userStore.user.team_id == null) this.loadTeammates('0x0x0x0');
+        else this.loadTeammates(this.$userStore.user.team_id);
+        
         this.loadKudos().then((res) => {
             if (res.length <= 0) this.kudosList.length = 0;
             else this.kudosList.length = res.length;
@@ -486,21 +507,26 @@ export default {
             if (doc.includes(ext)) return 'document';
             return '';
         },
-        loadTeammates() {
+        loadTeammates(team_id) {
             return new Promise((resolve, reject) => {
-                axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${this.$userStore.user.team_id}`)
-                    .then((res) => {
-                        if (res.data.result == null) {
-                            console.log(res.data);
-                            return;
-                        }
-                        this.users = res.data.result;
-                        this.users = this.validateUserStatus(this.users);
-                        this.groupedUsers = this.groupByTeam(this.users);
-                        resolve(this.groupedUsers);
-                    }).catch(error => {
-                        reject(error);
-                    });
+                if (team_id === '0x0x0x0') {
+                    this.groupedUsers = {};
+                    resolve(this.groupedUsers);
+                } else {
+                    axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${team_id}`)
+                        .then((res) => {
+                            if (res.data.result == null) {
+                                resolve(res.data.msg);
+                                return;
+                            }
+                            this.users = res.data.result;
+                            this.users = this.validateUserStatus(this.users);
+                            this.groupedUsers = this.groupByTeam(this.users);
+                            resolve(this.groupedUsers);
+                        }).catch((error) => {
+                            reject(error);
+                        });
+                }
             });
         },
         validateUserStatus(users) {
@@ -524,29 +550,41 @@ export default {
             this.kudosList = {};
             
             const toast = showToast('Loading profile', 'alert-info', true).show();
-            delay(0)
-                .then(() => lStore.setObject('view_profile', user))
-                .then(() => {
-                    if (user.user_id == this.currentUserId) {
-                        this.$router.push('/profile').then(() => {
-                            this.loading = false;
-                            toast.hide();
-                            delay(500).then(() => scrollToTop());
-                        });
-                    } else {
-                        this.$router.push('/userprofile').then(() => {
-                            this.loading = false;
-                            toast.hide();
-                        });
-                    }
-                });
+            return new Promise((resolve, reject) => {
+                axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/viewprofile?userid=${user.user_id}`)
+                    .then((res) => {
+                        if (res.data.result == null) {
+                            resolve(res.data.msg);
+                            return;
+                        }
+                        delay(0)
+                            .then(() => lStore.setObject('view_profile', res.data.result))
+                            .then(() => {
+                                if (user.user_id == this.currentUserId) {
+                                    this.$router.push('/profile').then(() => {
+                                        this.loading = false;
+                                        toast.hide();
+                                        delay(500).then(() => scrollToTop());
+                                    });
+                                } else {
+                                    this.$router.push('/userprofile').then(() => {
+                                        this.loading = false;
+                                        toast.hide();
+                                    });
+                                }
+                            });
+                            resolve(res.data.result);
+                    }).catch(error => {
+                        reject(error);
+                    });
+            });
         },
         loadKudos() {
             return new Promise((resolve, reject) => {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showKudos?userid=${this.$userStore.user.user_id}`)
                     .then((res) => {
                         if (res.data.result == null) {
-                            console.log(res.data);
+                            resolve(res.data.msg);
                             return;
                         }
                         this.kudosList = res.data.result;

@@ -26,9 +26,6 @@ import '@/assets/vendor/tinymce/tinymce.min.js';
 import '@/assets/vendor/php-email-form/validate.js';
 import '@/assets/js/main.js';
 
-// Remix Icons
-import 'remixicon/fonts/remixicon.css';
-
 // Animate.css
 import 'animate.css';
 

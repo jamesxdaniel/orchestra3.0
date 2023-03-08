@@ -1,22 +1,62 @@
+import CryptoJS from 'crypto-js';
+
 class LocalStore {
-    set(key, value) { localStorage.setItem(key, value); }
-    get(key) { return localStorage.getItem(key); }
-    setObject(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-    getObject(key) { return JSON.parse(localStorage.getItem(key)); }
-    remove(key) { localStorage.removeItem(key); }
+    #secretKey; // private property to store secret key
+
+    constructor(secretKey) {
+        this.#secretKey = secretKey;
+    }
+
+    set(key, value) { 
+        const encryptedValue = CryptoJS.AES.encrypt(value, this.#secretKey).toString();
+        localStorage.setItem(key, encryptedValue);
+    }
+
+    get(key) {
+        const encryptedValue = localStorage.getItem(key);
+        if (encryptedValue) {
+            const bytes = CryptoJS.AES.decrypt(encryptedValue, this.#secretKey);
+            const decryptedValue = bytes.toString(CryptoJS.enc.Utf8);
+            return decryptedValue;
+        }
+        return null;
+    }
+
+    setObject(key, value) {
+        const encryptedValue = CryptoJS.AES.encrypt(JSON.stringify(value), this.#secretKey).toString();
+        localStorage.setItem(key, encryptedValue);
+    }
+
+    getObject(key) {
+        const encryptedValue = localStorage.getItem(key);
+        if (encryptedValue) {
+            const bytes = CryptoJS.AES.decrypt(encryptedValue, this.#secretKey);
+            const decryptedValue = bytes.toString(CryptoJS.enc.Utf8);
+            return JSON.parse(decryptedValue);
+        }
+        return null;
+    }
+
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+
     setInObject(parentKey, childKey, value) {
-        let parentObject = this.getObject(parentKey);
+        let parentObject = this.getObject(parentKey) || {};
         parentObject[childKey] = value;
         this.setObject(parentKey, parentObject);
     }
+
     isset(key) {
         if (localStorage.getItem(key) == null) return false;
         return true;
     }
+
     getInObject(parentKey, childKey) {
         let parentObject = this.getObject(parentKey);
-        return parentObject[childKey];
+        return parentObject ? parentObject[childKey] : null;
     }
+    
     objectify(stringObj) {
         stringObj = stringObj.replaceAll('&#34;', '"');
         stringObj = JSON.parse(stringObj);
@@ -24,7 +64,7 @@ class LocalStore {
     }
 };
 
-const lStore = new LocalStore();
+const lStore = new LocalStore('secretKey');
 
 function removeFix(object, fix) {
     let newObj = {};

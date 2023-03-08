@@ -37,6 +37,60 @@
                             </div>
                         </div>
 
+                        <div class="card border-3 border-top border-primary">
+                            <div class="card-body profile-details">
+                                <h5 class="card-title">Profile Details</h5>
+                                
+                                <div class="row border-1 border-top-0 border-bottom border-start-0 border-end-0 mb-3 pb-3">
+                                    <div class="col-12 label d-inline-flex align-items-center text-primary fw-bolder mb-3">
+                                        <i class="ri-mail-fill me-2 fs-5"></i> Email
+                                    </div>
+                                    <div class="col-12" v-if="this.loadedUser.user_email == ''">&mdash;</div>
+                                    <div class="col-12">{{ this.loadedUser.user_email }}</div>
+                                </div>
+
+                                <div class="row border-1 border-top-0 border-bottom border-start-0 border-end-0 mb-3 pb-3">
+                                    <div class="col-12 label d-inline-flex align-items-center text-primary fw-bolder mb-3">
+                                        <i class="ri-contacts-book-2-fill me-2 fs-5"></i> Contact Number
+                                    </div>
+                                    <div class="col-12" v-if="this.loadedUser.user_phone == ''">&mdash;</div>
+                                    <div class="col-12">{{ this.loadedUser.user_phone }}</div>
+                                </div>
+
+                                <div class="row border-1 border-top-0 border-bottom border-start-0 border-end-0 mb-3 pb-3">
+                                    <div class="col-12 label d-inline-flex align-items-center text-primary fw-bolder mb-3">
+                                        <i class="ri-mail-fill me-2 fs-5"></i> Zimbra Email
+                                    </div>
+                                    <div class="col-12" v-if="this.loadedUser.user_zimbra_email == ''">&mdash;</div>
+                                    <div class="col-12">{{ this.loadedUser.user_zimbra_email }}</div>
+                                </div>
+
+                                <div class="row border-1 border-top-0 border-bottom border-start-0 border-end-0 mb-3 pb-3">
+                                    <div class="col-12 label d-inline-flex align-items-center text-primary fw-bolder mb-3">
+                                        <i class="ri-google-fill me-2 fs-5"></i> Gmail Email
+                                    </div>
+                                    <div class="col-12" v-if="this.loadedUser.user_gmail_email == ''">&mdash;</div>
+                                    <div class="col-12">{{ this.loadedUser.user_gmail_email }}</div>
+                                </div>
+
+                                <div class="row border-1 border-top-0 border-bottom border-start-0 border-end-0 mb-3 pb-3">
+                                    <div class="col-12 label d-inline-flex align-items-center text-primary fw-bolder mb-3">
+                                        <i class="ri-skype-fill me-2 fs-5"></i> Skype Name
+                                    </div>
+                                    <div class="col-12" v-if="this.loadedUser.user_skype_name == ''">&mdash;</div>
+                                    <div class="col-12">{{ this.loadedUser.user_skype_name }}</div>
+                                </div>
+
+                                <div class="row pb-3">
+                                    <div class="col-12 label d-inline-flex align-items-center text-primary fw-bolder mb-3">
+                                        <i class="ri-mail-fill me-2 fs-5"></i> Web Mail
+                                    </div>
+                                    <div class="col-12" v-if="this.loadedUser.security_email == ''">&mdash;</div>
+                                    <div class="col-12">{{ this.loadedUser.security_email }}</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="col-xl-8">
@@ -50,13 +104,13 @@
                                     <li class="nav-item">
                                         <button class="nav-link d-flex align-items-center bg-transparent active"
                                             data-bs-toggle="tab" data-bs-target="#profile-teammates"
-                                            @click="loadTeammates"><i class="ri-team-fill me-2"></i> Teammates</button>
+                                            @click="loadTeammates(this.loadedUser.team_id)"><i class="ri-team-fill me-2"></i> Teammates</button>
                                     </li>
 
                                     <li class="nav-item">
                                         <button class="nav-link d-flex align-items-center bg-transparent"
-                                            data-bs-toggle="tab" data-bs-target="#profile-kudos"><i
-                                                class="ri-thumb-up-fill me-2"></i> Kudos</button>
+                                            data-bs-toggle="tab" data-bs-target="#profile-kudos">
+                                            <i class="ri-thumb-up-fill me-2"></i> Kudos</button>
                                     </li>
 
                                 </ul>
@@ -64,7 +118,8 @@
                                 <div class="tab-content pt-2">
 
                                     <div class="tab-pane fade profile-teammates show active" id="profile-teammates">
-                                        <h5 class="card-title d-flex align-items-center"><i class="ri-team-fill me-2"></i> {{ this.loadedUser.main_team_name }}</h5>
+                                        <h5 class="card-title d-flex align-items-center" v-if="this.loadedUser.main_team_name == null"><i class="ri-team-fill me-2"></i> No Team Found</h5>
+                                        <h5 class="card-title d-flex align-items-center" v-else><i class="ri-team-fill me-2"></i> {{ this.loadedUser.main_team_name }}</h5>
 
                                         <div class="profile-teammates-container px-3">
                                             <div class="row mb-5" v-for="(team, teamName) in groupedUsers"
@@ -101,11 +156,16 @@
                                                                 <div class="col-auto d-flex flex-column justify-content-center align-items-center user-select-none"
                                                                     v-for="(user, index) in item.users" :key="index"
                                                                     @click="viewProfile(user)">
-                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo" alt="Profile"
+                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + this.$userStore.user.user_photo" :alt="user.user_id"
                                                                         class="rounded-circle float-start p-1 border border-3 border-primary"
-                                                                        v-if="user.user_photo.includes('assets/profile')">
-                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo"
-                                                                        alt="Profile"
+                                                                        v-if="user.user_id == this.$userStore.user.user_id">
+                                                                    <img :src="`http://ns.proweaver.host/nsorchestra/api/` + user.user_photo" :alt="user.user_id"
+                                                                        class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                        v-else-if="user.user_id != this.$userStore.user.user_id && !user.user_photo.includes('assets/profile')">
+                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo" :alt="user.user_id"
+                                                                        class="rounded-circle float-start p-1 border border-3 border-primary"
+                                                                        v-else-if="user.user_id != this.$userStore.user.user_id && user.user_photo.includes('assets/profile')">
+                                                                    <img :src="`https://office.orchestra.tools/` + user.user_photo" :alt="user.user_id"
                                                                         class="rounded-circle float-start p-1 border border-3 border-primary"
                                                                         v-else>
                                                                     <span class="mt-2 text-primary">{{ user.user_alias_name }}</span>
@@ -123,7 +183,7 @@
                                                 <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
                                             </a>
                                         </div>
-                                        <div class="container" v-else>
+                                        <div class="container py-5" v-else>
                                             <div class="d-flex justify-content-center align-items-center flex-column text-center">
                                                 <span class="text-secondary">No Kudos Found</span>
                                             </div>
@@ -178,29 +238,35 @@ export default {
             }
         }
     },
-    created() {
-        this.loadTeammates().then(() => scrollToTop());
+    mounted() {
+        if (this.loadedUser.team_id == null) this.loadedUser.team_id = '0x0x0x0';
+        this.loadTeammates(this.loadedUser.team_id).then(() => scrollToTop());
         this.loadKudos().then((res) => {
             if (res.length <= 0) this.kudosList.length = 0;
             else this.kudosList.length = res.length;
         });
     },
     methods: {
-        loadTeammates() {
+        loadTeammates(team_id) {
             return new Promise((resolve, reject) => {
-                axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${this.loadedUser.team_id}`)
-                    .then((res) => {
-                        if (res.data.result == null) {
-                            resolve(res.data.msg);
-                            return;
-                        }
-                        this.users = res.data.result;
-                        this.users = this.validateUserStatus(this.users);
-                        this.groupedUsers = this.groupByTeam(this.users);
-                        resolve(this.groupedUsers);
-                    }).catch(error => {
-                        reject(error);
-                    });
+                if (team_id === '0x0x0x0') {
+                    this.groupedUsers = {};
+                    resolve(this.groupedUsers);
+                } else {
+                    axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showteam?teamid=${team_id}`)
+                        .then((res) => {
+                            if (res.data.result == null) {
+                                resolve(res.data.msg);
+                                return;
+                            }
+                            this.users = res.data.result;
+                            this.users = this.validateUserStatus(this.users);
+                            this.groupedUsers = this.groupByTeam(this.users);
+                            resolve(this.groupedUsers);
+                        }).catch((error) => {
+                            reject(error);
+                        });
+                }
             });
         },
         validateUserStatus(users) {
@@ -224,34 +290,57 @@ export default {
             this.kudosList = {};
             
             const toast = showToast('Loading profile', 'alert-info', true).show();
-            delay(0)
-                .then(() => lStore.setObject('view_profile', user))
-                .then(() => this.loadedUser = user)
-                .then(() => {
-                    if (user.user_id == this.$userStore.user.user_id) {
-                        this.$router.push('/profile').then(() => {
-                            this.loading = false;
-                            toast.hide();
-                            delay(0).then(() => scrollToTop());
-                        });
-                    } else {
-                        this.loadTeammates().then(() => {
-                            this.loadKudos().then((res) => {
-                                if (res.length <= 0) this.kudosList.length = 0;
-                                this.loading = false;
-                                toast.hide();
-                                delay(0).then(() => scrollToTop());
+            return new Promise((resolve, reject) => {
+                axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/viewprofile?userid=${user.user_id}`)
+                    .then((res) => {
+                        if (res.data.result == null) {
+                            resolve(res.data.msg);
+                            return;
+                        }
+                        delay(0)
+                            .then(() => lStore.setObject('view_profile', res.data.result))
+                            .then(() => this.loadedUser = res.data.result)
+                            .then(() => {
+                                if (user.user_id == this.$userStore.user.user_id) {
+                                    this.$router.push('/profile').then(() => {
+                                        this.loading = false;
+                                        toast.hide();
+                                        delay(0).then(() => scrollToTop());
+                                    });
+                                } else {
+                                    if (this.loadedUser.team_id == null) {
+                                        this.loadTeammates('0x0x0x0').then(() => {
+                                            this.loadKudos().then((res) => {
+                                                if (res.length <= 0) this.kudosList.length = 0;
+                                                this.loading = false;
+                                                toast.hide();
+                                                delay(0).then(() => scrollToTop());
+                                            });
+                                        });
+                                    } else {
+                                        this.loadTeammates(this.loadedUser.team_id).then(() => {
+                                            this.loadKudos().then((res) => {
+                                                if (res.length <= 0) this.kudosList.length = 0;
+                                                this.loading = false;
+                                                toast.hide();
+                                                delay(0).then(() => scrollToTop());
+                                            });
+                                        });
+                                    }
+                                }
                             });
-                        });
-                    }
-                });
+                            resolve(res.data.result);
+                    }).catch(error => {
+                        reject(error);
+                    });
+            });
         },
         loadKudos() {
             return new Promise((resolve, reject) => {
                 axios.post(`http://ns.proweaver.host/nsorchestra/api/usercontroller/showKudos?userid=${this.loadedUser.user_id}`)
                     .then((res) => {
                         if (res.data.result == null) {
-                            console.log(res.data);
+                            resolve(res.data.msg);
                             return;
                         }
                         this.kudosList = res.data.result;
