@@ -8,7 +8,7 @@
                 <h1>My Profile</h1>
             </div>
 
-            <section class="section profile">
+            <section class="section default-tab">
                 <div class="row">
 
                     <div class="col-xl-4">
@@ -51,14 +51,16 @@
 
                                     <li class="nav-item">
                                         <button class="nav-link d-flex align-items-center bg-transparent active"
-                                            data-bs-toggle="tab" data-bs-target="#profile-overview"><i
-                                                class="ri-profile-fill me-2"></i> Overview</button>
+                                            data-bs-toggle="tab" data-bs-target="#profile-overview">
+                                            <i class="ri-profile-fill me-2"></i> Overview
+                                        </button>
                                     </li>
 
                                     <li class="nav-item">
                                         <button class="nav-link d-flex align-items-center bg-transparent"
-                                            data-bs-toggle="tab" data-bs-target="#profile-edit"><i
-                                                class="ri-edit-box-fill me-2"></i> Edit Profile</button>
+                                            data-bs-toggle="tab" data-bs-target="#profile-edit">
+                                            <i class="ri-edit-box-fill me-2"></i> Edit Profile
+                                        </button>
                                     </li>
 
                                     <li class="nav-item">
@@ -616,7 +618,7 @@ export default {
 </script>
 
 <style scoped>
-.profile-card img, .profile .profile-edit img, form img {
+.profile-card img, .profile-edit img, form img {
     width: 120px;
     height: 120px;
     object-fit: cover;

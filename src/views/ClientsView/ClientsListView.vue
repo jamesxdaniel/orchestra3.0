@@ -9,7 +9,7 @@
 			<section class="section">
 				<div class="row">
 
-					<div class="col-xl-3">
+					<div class="col-xl-4">
 
 						<div class="card border-3 border-top border-primary">
 							<div class="card-body">
@@ -30,46 +30,49 @@
 
 					</div>
 
-					<div class="col-lg-9">
+					<div class="col-lg-8">
 						<div class="card">
 							<div class="card-body">
 								<h5 class="card-title">Client List</h5>
 
 								<!-- Start Table -->
-								<table class="table table-striped table-hover">
-									<thead class="table-primary">
-										<tr>
-											<th scope="col" class="py-3">Company Name</th>
-											<th scope="col" class="py-3">Opened By</th>
-											<th scope="col" class="py-3">Date</th>
-											<th scope="col" class="py-3">Actions</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr v-for="client in this.$userStore.clientList" :key="client.acc_id">
-											<td class="align-middle"><a href="#" @click.prevent="viewClient(client)">{{ client.company }}</a></td>
-											<td class="align-middle">{{ client.user_alias_name }}</td>
-											<td class="align-middle">{{ client.date_added }}</td>
-											<td class="align-middle">
-												<button
-													type="button"
-													class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-warning me-1"
-													data-bs-toggle="tooltip"
-													data-bs-title="Tickets"><i class="ri-ticket-fill"></i></button>
-												<button
-													type="button"
-													class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-primary me-1"
-													data-bs-toggle="tooltip"
-													data-bs-title="Tasks"><i class="ri-window-fill"></i></button>
-												<button
-													type="button"
-													class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-success" 
-													data-bs-toggle="tooltip"
-													data-bs-title="Events List"><i class="ri-calendar-event-fill"></i></button>
-											</td>
-										</tr>
-									</tbody>
-								</table>
+								<div class="table-responsive">
+									<table class="table table-striped table-hover">
+										<thead class="table-primary">
+											<tr>
+												<th scope="col" class="py-3">Company Name</th>
+												<th scope="col" class="py-3">Opened By</th>
+												<th scope="col" class="py-3">Date</th>
+												<th scope="col" class="py-3">Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="client in this.$userStore.clientList" :key="client.acc_id">
+												<td class="align-middle"><a href="#" @click.prevent="viewClient(client)">{{ client.company }}</a></td>
+												<td class="align-middle">{{ client.user_alias_name }}</td>
+												<td class="align-middle">{{ client.date_added }}</td>
+												<td class="align-middle">
+													<button
+														type="button"
+														class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-warning me-1"
+														data-bs-toggle="tooltip"
+														data-bs-title="Tickets"><i class="ri-ticket-fill"></i></button>
+													<button
+														type="button"
+														class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-primary me-1"
+														data-bs-toggle="tooltip"
+														data-bs-title="Tasks"><i class="ri-window-fill"></i></button>
+													<button
+														type="button"
+														class="d-inline-flex justify-content-center align-items-center btn btn-sm btn-success" 
+														data-bs-toggle="tooltip"
+														data-bs-title="Events List"><i class="ri-calendar-event-fill"></i></button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
 								<ul class="pagination" v-if="this.$userStore.clientList.length > 0">
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage <= 1 }">
 										<a class="page-link" href="#" @click.prevent="previousPage">&laquo; Previous</a>

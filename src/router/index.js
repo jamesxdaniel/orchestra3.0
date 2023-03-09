@@ -50,12 +50,12 @@ const router = createRouter({
 		{
 			path: '/profile',
 			name: 'profile',
-			component: () => import('@/views/ProfileView.vue')
+			component: () => import('@/views/ProfileView/ProfileView.vue')
 		},
 		{
 			path: '/userprofile',
 			name: 'userprofile',
-			component: () => import('@/views/UserProfile.vue'),
+			component: () => import('@/views/ProfileView/UserProfile.vue'),
 			beforeEnter: () => {
 				if (!lStore.isset('view_profile')) return '/profile';
 			}

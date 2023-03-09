@@ -8,7 +8,7 @@
                 <h1>Profile</h1>
             </div>
 
-            <section class="section profile">
+            <section class="section default-tab">
                 <div class="row">
                     <div class="col-xl-4">
 
@@ -372,7 +372,7 @@ export default {
 </script>
 
 <style scoped>
-.profile-card img, .profile .profile-edit img, form img {
+.profile-card img, .profile-edit img, form img {
     width: 120px;
     height: 120px;
     object-fit: cover;

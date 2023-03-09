@@ -1017,26 +1017,26 @@ h6 {
 }
 
 /*--------------------------------------------------------------
-# Profie Page
+# Profile Page
 --------------------------------------------------------------*/
-.profile .profile-card img {
+.default-tab .profile-card img {
   max-width: 120px;
 }
 
-.profile .profile-card h2 {
+.default-tab .profile-card h2 {
   font-size: 20px;
   font-weight: 700;
   color: var(--text-color);
   margin: 15px 0 0 0;
 }
 
-.profile .profile-card h3 {
+.default-tab .profile-card h3 {
   font-size: 14px;
   color: var(--bs-secondary);
   margin: 0;
 }
 
-.profile .profile-card .social-links a {
+.default-tab .profile-card .social-links a {
   font-size: 20px;
   display: inline-block;
   color: rgba(1, 41, 112, 0.5);
@@ -1045,32 +1045,25 @@ h6 {
   transition: 0.3s;
 }
 
-.profile .profile-card .social-links a:hover {
+.default-tab .profile-card .social-links a:hover {
   color: var(--bs-primary);
 }
 
-.profile .profile-overview .row {
+.default-tab .tab-pane .row {
   margin-bottom: 20px;
   font-size: 15px;
 }
 
-.profile .profile-overview .card-title,
-.profile .profile-edit .card-title,
-.profile .profile-teammates .card-title {
+.default-tab .tab-pane .card-title {
   color: var(--bs-secondary);
 }
 
-.profile .profile-overview .label {
+.default-tab .tab-pane .label {
   font-weight: 600;
   color: var(--text-color-link);
 }
 
-.profile .profile-edit label {
-  font-weight: 600;
-  color: var(--text-color-link);
-}
-
-.profile .profile-edit img {
+.default-tab .tab-pane img {
   max-width: 120px;
 }
 

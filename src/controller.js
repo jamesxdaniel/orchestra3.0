@@ -112,7 +112,7 @@ function showToast(alertMessage, alertType = 'alert-info', alertLoader = false) 
 
     // Create the error icon element
     const errorElement = document.createElement('span');
-    errorElement.classList.add('ri', 'ri-error-warning-fill');
+    errorElement.classList.add('ri', 'ri-alert-fill');
     errorElement.setAttribute('role', 'status');
     errorElement.setAttribute('aria-hidden', 'true');
     errorElement.style.display = 'inline';
@@ -120,7 +120,7 @@ function showToast(alertMessage, alertType = 'alert-info', alertLoader = false) 
     // Create the heading element
     const headingElement = document.createElement('h4');
     headingElement.classList.add('alert-heading', 'fs-6', 'fw-bolder', 'm-0', 'mb-1');
-    if (alertType == 'alert-info') headingElement.textContent = 'Info';
+    if (alertType == 'alert-info') headingElement.textContent = 'Information';
     if (alertType == 'alert-success') headingElement.textContent = 'Success';
     if (alertType == 'alert-danger') headingElement.textContent = 'Error';
 
@@ -194,9 +194,9 @@ function cleanText(text) {
     const replacements = {
         '&#039;': "'",
         '&quot;': '"',
-        '&lt;': '<',
-        '&gt;': '>',
-        '&amp;': '&',
+        '&lt;'  : '<',
+        '&gt;'  : '>',
+        '&amp;' : '&',
         // add more replacements as needed
     };
 
