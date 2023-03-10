@@ -33,11 +33,18 @@
 					<div class="col-lg-8">
 						<div class="card">
 							<div class="card-body">
-								<h5 class="card-title">Client List</h5>
+								<div class="d-flex justify-content-between align-items-center my-3">
+									<h5 class="card-title p-0 m-0">Client List</h5>
+									<div class="table-search d-flex justify-content-end align-items-center">
+										<span class="me-3" v-if="this.$userStore.searchedClient !== null">Reset</span>
+										<input class="form-control me-2" placeholder="Search..." type="search" v-model="searchCriteria">
+										<button type="button" class="btn btn-primary" @click="searchClient($event)"><i class="bi bi-search"></i></button>
+									</div>
+								</div>
 
 								<!-- Start Table -->
 								<div class="table-responsive">
-									<table class="table table-striped table-hover">
+									<table id="datatable" class="table table-striped table-hover">
 										<thead class="table-primary">
 											<tr>
 												<th scope="col" class="py-3">Company Name</th>
@@ -73,7 +80,7 @@
 									</table>
 								</div>
 								
-								<ul class="pagination" v-if="this.$userStore.clientList.length > 0">
+								<ul class="pagination" v-if="this.$userStore.clientList.length > 0 && this.$userStore.searchedClient == null">
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage <= 1 }">
 										<a class="page-link" href="#" @click.prevent="previousPage">&laquo; Previous</a>
 									</li>
@@ -82,6 +89,19 @@
 										<a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
 									</li>
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage >= pageCount }">
+										<a class="page-link" href="#" @click.prevent="nextPage">Next &raquo;</a>
+									</li>
+								</ul>
+
+								<ul class="pagination" v-else>
+									<li class="page-item" :class="{ 'disabled': this.$userStore.currentSearchedClientListPage <= 1 }">
+										<a class="page-link" href="#" @click.prevent="previousPage">&laquo; Previous</a>
+									</li>
+									<li v-for="page in displayedPages" :key="page" class="page-item"
+										:class="{ 'active': this.$userStore.currentSearchedClientListPage === page }">
+										<a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+									</li>
+									<li class="page-item" :class="{ 'disabled': this.$userStore.currentSearchedClientListPage >= pageCount }">
 										<a class="page-link" href="#" @click.prevent="nextPage">Next &raquo;</a>
 									</li>
 								</ul>
@@ -107,8 +127,9 @@ export default {
 	data() {
 		return {
 			tooltipConfig,
+			searchCriteria: (this.$userStore.searchedClient !== null) ? this.$userStore.searchedClient : null,
 			clientList: [],
-			pageSize: 100
+			pageSize: 50
 		};
 	},
 	setup() {
@@ -138,20 +159,86 @@ export default {
 			.then(() => scrollToTop())
 			.then(() => this.tooltipConfig());
 		},
+		searchClient(e) {
+			if (this.searchCriteria == null || this.searchCriteria == '') return;
+
+			let offset;
+			if (e !== undefined && e.type === 'click') offset = 0;
+			else offset = (this.$userStore.currentSearchedClientListPage - 1) * this.pageSize;
+
+			let toastAlert = showToast('Searching client', 'alert-info', true).show();
+
+			axios.get('http://ns.proweaver.host/nsorchestra/api/Clientcontroller/getallClients', { params: { limit: this.pageSize, offset, criteria: this.searchCriteria } }).then((res) => {
+				if (res.data.result == null) {
+					toastAlert.remove();
+					throw new Error(res.data.msg);
+				}
+
+				this.clientList = res.data.result.data;
+				this.clientList.forEach(client => {
+					client.date_added = formatDate(client.date_added);
+				});
+
+				this.userStore.setClientList(this.clientList);
+				this.userStore.setTotalClientSearch(res.data.result.total);
+				if (e !== undefined && e.type === 'click') this.userStore.setSearchedClient(this.searchCriteria);
+				if (e !== undefined && e.type === 'click') this.userStore.currentSearchedClientListPage = 1;
+			})
+			.then(() => toastAlert.hide())
+			.then(() => this.tooltipConfig())
+			.catch((err) => {
+				toastAlert = showToast(err.message, 'alert-danger').show();
+			});
+		},
 		goToPage(page) {
-			this.$userStore.currentClientListPage = page;
-			this.getClients();
+			if (this.$userStore.searchedClient == null) {
+				this.$userStore.currentClientListPage = page;
+				this.getClients();
+			} else if (this.$userStore.searchedClient == this.searchCriteria) {
+				this.$userStore.currentSearchedClientListPage = page;
+				this.searchClient();
+			} else {
+				this.$userStore.currentSearchedClientListPage = page;
+				this.searchCriteria = this.$userStore.searchedClient;
+				this.searchClient();
+			}
 		},
 		nextPage() {
-			if (this.$userStore.currentClientListPage < this.pageCount) {
-				this.$userStore.currentClientListPage++;
-				this.getClients();
+			if (this.$userStore.searchedClient == null) {
+				if (this.$userStore.currentClientListPage < this.pageCount) {
+					this.$userStore.currentClientListPage++;
+					this.getClients();
+				}
+			} else if (this.$userStore.searchedClient == this.searchCriteria) {
+				if (this.$userStore.currentSearchedClientListPage < this.pageCount) {
+					this.$userStore.currentSearchedClientListPage++;
+					this.searchClient();
+				}
+			} else {
+				if (this.$userStore.currentSearchedClientListPage < this.pageCount) {
+					this.$userStore.currentSearchedClientListPage++;
+					this.searchCriteria = this.$userStore.searchedClient;
+					this.searchClient();
+				}
 			}
 		},
 		previousPage() {
-			if (this.$userStore.currentClientListPage > 1) {
-				this.$userStore.currentClientListPage--;
-				this.getClients();
+			if (this.$userStore.searchedClient == null) {
+				if (this.$userStore.currentClientListPage > 1) {
+					this.$userStore.currentClientListPage--;
+					this.getClients();
+				}
+			} else if (this.$userStore.searchedClient == this.searchCriteria) {
+				if (this.$userStore.currentSearchedClientListPage > 1) {
+					this.$userStore.currentSearchedClientListPage--;
+					this.searchClient();
+				}
+			} else {
+				if (this.$userStore.currentSearchedClientListPage > 1) {
+					this.$userStore.currentSearchedClientListPage--;
+					this.searchCriteria = this.$userStore.searchedClient;
+					this.searchClient();
+				}
 			}
 		},
 		viewClient(company) {
@@ -166,17 +253,28 @@ export default {
 	},
 	computed: {
 		pageCount() {
-			return Math.ceil(this.$userStore.totalClients / this.pageSize);
+			if (this.$userStore.searchedClient !== null) return Math.ceil(this.$userStore.totalClientsSearched / this.pageSize);
+			else return Math.ceil(this.$userStore.totalClients / this.pageSize);
 		},
 		displayedPages() {
 			const maxDisplayed = 6;
-			let start = Math.max(1, this.$userStore.currentClientListPage - Math.floor(maxDisplayed / 2));
-			let end = Math.min(this.pageCount, start + maxDisplayed - 1);
-			start = Math.max(1, end - maxDisplayed + 1);
-			if (end - start + 1 > maxDisplayed) {
-			end = start + maxDisplayed - 1;
+			if (this.$userStore.searchedClient !== null) {
+				let start = Math.max(1, this.$userStore.currentSearchedClientListPage - Math.floor(maxDisplayed / 2));
+				let end = Math.min(this.pageCount, start + maxDisplayed - 1);
+				start = Math.max(1, end - maxDisplayed + 1);
+				if (end - start + 1 > maxDisplayed) {
+				end = start + maxDisplayed - 1;
+				}
+				return Array(end - start + 1).fill().map((_, i) => start + i);
+			} else {
+				let start = Math.max(1, this.$userStore.currentClientListPage - Math.floor(maxDisplayed / 2));
+				let end = Math.min(this.pageCount, start + maxDisplayed - 1);
+				start = Math.max(1, end - maxDisplayed + 1);
+				if (end - start + 1 > maxDisplayed) {
+				end = start + maxDisplayed - 1;
+				}
+				return Array(end - start + 1).fill().map((_, i) => start + i);
 			}
-			return Array(end - start + 1).fill().map((_, i) => start + i);
 		}
 	}
 };

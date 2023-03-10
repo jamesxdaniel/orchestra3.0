@@ -167,6 +167,10 @@ function showToast(alertMessage, alertType = 'alert-info', alertLoader = false) 
             setTimeout(() => alertElement.classList.add('animate__fadeOut'), 1500);
             setTimeout(() => alertElement.remove(), 2500);
             return alertObject;
+        },
+        remove: function () {
+            alertElement.remove();
+            return alertObject;
         }
     };
 

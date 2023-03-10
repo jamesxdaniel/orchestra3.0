@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class EditUsermodel extends CI_Model{
+    class Editusermodel extends CI_Model{
         protected $userid;
         protected $password;
         protected $zimbraemail;

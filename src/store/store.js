@@ -9,6 +9,9 @@ export const useUserStore = defineStore({
         clientList: [],
         currentClientListPage: 1,
         totalClients: null,
+        searchedClient: null,
+        currentSearchedClientListPage: 1,
+        totalClientsSearched: null,
         companyName: 'Orchestra',
         isLoggedIn: false,
     }),
@@ -29,13 +32,16 @@ export const useUserStore = defineStore({
             }
         },
         setClientList(clientList) {
-            this.clientList = clientList
-        },
-        setCurrentClientListPage(page) {
-            this.currentClientListPage = page
+            this.clientList = clientList;
         },
         setTotalClient(totalClients) {
-            this.totalClients = totalClients
+            this.totalClients = totalClients;
+        },
+        setTotalClientSearch(totalClients) {
+            this.totalClientsSearched = totalClients;
+        },
+        setSearchedClient(client) {
+            this.searchedClient = client;
         },
         viewClientInfo(client) {
             this.client = client;

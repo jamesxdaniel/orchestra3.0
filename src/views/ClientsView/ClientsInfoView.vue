@@ -6,7 +6,7 @@
 				<h1>{{ this.$userStore.client.company }}</h1>
 			</div>
 
-			<section class="section">
+			<section class="section default-tab">
 				<div class="row">
 
 					<div class="col-xl-4">

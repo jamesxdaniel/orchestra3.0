@@ -26,7 +26,6 @@ class PWFileManager extends CI_Model{
         if(!isset($data['keep_filename'])) {
             $new_name = 'Orchestra3-'.date('Y-m-d_H-i-s');
         }
-        echo 'controller';
 
         $dname = explode(".", $file['name']);
         $path = (isset($params['path'])) ? $params['path'] : '';
