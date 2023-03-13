@@ -7,7 +7,7 @@ class LocalStore {
         this.#secretKey = secretKey;
     }
 
-    set(key, value) { 
+    set(key, value) {
         const encryptedValue = CryptoJS.AES.encrypt(value, this.#secretKey).toString();
         localStorage.setItem(key, encryptedValue);
     }
@@ -56,7 +56,7 @@ class LocalStore {
         let parentObject = this.getObject(parentKey);
         return parentObject ? parentObject[childKey] : null;
     }
-    
+
     objectify(stringObj) {
         stringObj = stringObj.replaceAll('&#34;', '"');
         stringObj = JSON.parse(stringObj);
@@ -177,10 +177,8 @@ function showToast(alertMessage, alertType = 'alert-info', alertLoader = false) 
     // Hide the alert automatically if alertLoader is false
     if (!alertLoader) {
         alertElement.classList.add('animate__fadeIn');
-        setTimeout(() => {
-            alertElement.classList.add('animate__fadeOut');
-            setTimeout(() => alertElement.remove(), 1500);
-        }, 2500);
+        setTimeout(() => alertElement.classList.add('animate__fadeOut'), 1500);
+        setTimeout(() => alertElement.remove(), 2500);
     }
 
     // Return the alert object
@@ -198,9 +196,9 @@ function cleanText(text) {
     const replacements = {
         '&#039;': "'",
         '&quot;': '"',
-        '&lt;'  : '<',
-        '&gt;'  : '>',
-        '&amp;' : '&',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&amp;': '&',
         // add more replacements as needed
     };
 
@@ -237,8 +235,30 @@ function tooltipConfig() {
     // Initialize the tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-    
+
     return tooltipList;
+};
+
+function limitText(text) {
+    let maxLength = 40;
+
+    // Check if the text length is greater than the maximum length
+    if (text.length > maxLength) {
+        // Truncate the text and add an ellipsis at the end
+        text = text.substring(0, maxLength) + "...";
+    }
+
+    return text;
+};
+
+function isEmpty(value) {
+    if (Array.isArray(value)) {
+        return value.length === 0;
+    } else if (typeof value === 'object') {
+        return Object.keys(value).length === 0;
+    } else {
+        return value === null || value === undefined || value.trim() === '' || value.startsWith('-') || value.startsWith('=') || value.startsWith('.');
+    }
 };
 
 export {
@@ -249,5 +269,7 @@ export {
     showToast,
     cleanText,
     formatDate,
-    tooltipConfig
+    tooltipConfig,
+    limitText,
+    isEmpty
 };

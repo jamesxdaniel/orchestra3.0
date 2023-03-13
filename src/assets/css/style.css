@@ -50,7 +50,7 @@ h6 {
 # Page Title
 --------------------------------------------------------------*/
 .pagetitle {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .pagetitle h1 {
@@ -490,8 +490,8 @@ h6 {
 }
 
 .header-nav .nav-profile img {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   object-fit: cover;
 }
 
@@ -1055,6 +1055,7 @@ h6 {
 }
 
 .default-tab .tab-pane .card-title {
+  font-weight: 700;
   color: var(--bs-secondary);
 }
 

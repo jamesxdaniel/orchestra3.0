@@ -11,12 +11,12 @@
 							<div class="form-input">
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="email" class="form-control" id="floatingInput" placeholder="" v-model="email" v-on:keyup.enter="login">
+										<input type="email" class="form-control" id="floatingInput" placeholder="" v-model="email" @keyup.enter="login">
 										<label for="floatingInput">Email address</label>
 										<i class="ri-mail-fill text-primary position-absolute top-50 end-0 pe-1 translate-middle"></i>
 									</div>
 									<div class="form-floating">
-										<input type="password" class="form-control" id="floatingInput" placeholder="" v-model="password" v-on:keyup.enter="login">
+										<input type="password" class="form-control" id="floatingInput" placeholder="" v-model="password" @keyup.enter="login">
 										<label for="floatingInput">Password</label>
 										<i class="ri-lock-fill text-primary position-absolute top-50 end-0 pe-1 translate-middle"></i>
 									</div>

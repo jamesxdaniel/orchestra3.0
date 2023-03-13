@@ -9,7 +9,7 @@
 			<section class="section">
 				<div class="row">
 
-					<div class="col-xl-4">
+					<div class="col-xl-3">
 
 						<div class="card border-3 border-top border-primary">
 							<div class="card-body">
@@ -30,14 +30,14 @@
 
 					</div>
 
-					<div class="col-lg-8">
+					<div class="col-xl-9">
 						<div class="card">
 							<div class="card-body">
 								<div class="d-flex justify-content-between align-items-center my-3">
 									<h5 class="card-title p-0 m-0">Client List</h5>
 									<div class="table-search d-flex justify-content-end align-items-center">
-										<span class="me-3" v-if="this.$userStore.searchedClient !== null">Reset</span>
-										<input class="form-control me-2" placeholder="Search..." type="search" v-model="searchCriteria">
+										<span class="me-3 reset-btn" v-if="this.$userStore.searchedClient !== null" @click="resetSearch">Reset</span>
+										<input class="form-control me-2" placeholder="Search..." type="search" v-model="searchCriteria" @keyup.enter="searchClient($event)">
 										<button type="button" class="btn btn-primary" @click="searchClient($event)"><i class="bi bi-search"></i></button>
 									</div>
 								</div>
@@ -55,7 +55,7 @@
 										</thead>
 										<tbody>
 											<tr v-for="client in this.$userStore.clientList" :key="client.acc_id">
-												<td class="align-middle"><a href="#" @click.prevent="viewClient(client)">{{ client.company }}</a></td>
+												<td class="align-middle text-nowrap"><a href="#" @click.prevent="viewClient(client)">{{ client.company }}</a></td>
 												<td class="align-middle">{{ client.user_alias_name }}</td>
 												<td class="align-middle">{{ client.date_added }}</td>
 												<td class="align-middle">
@@ -82,27 +82,27 @@
 								
 								<ul class="pagination" v-if="this.$userStore.clientList.length > 0 && this.$userStore.searchedClient == null">
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage <= 1 }">
-										<a class="page-link" href="#" @click.prevent="previousPage">&laquo; Previous</a>
+										<a class="page-link" href="#" @click.prevent="previousPage">Previous</a>
 									</li>
 									<li v-for="page in displayedPages" :key="page" class="page-item"
 										:class="{ 'active': this.$userStore.currentClientListPage === page }">
 										<a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
 									</li>
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentClientListPage >= pageCount }">
-										<a class="page-link" href="#" @click.prevent="nextPage">Next &raquo;</a>
+										<a class="page-link" href="#" @click.prevent="nextPage">Next</a>
 									</li>
 								</ul>
 
 								<ul class="pagination" v-else>
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentSearchedClientListPage <= 1 }">
-										<a class="page-link" href="#" @click.prevent="previousPage">&laquo; Previous</a>
+										<a class="page-link" href="#" @click.prevent="previousPage">Previous</a>
 									</li>
 									<li v-for="page in displayedPages" :key="page" class="page-item"
 										:class="{ 'active': this.$userStore.currentSearchedClientListPage === page }">
 										<a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
 									</li>
 									<li class="page-item" :class="{ 'disabled': this.$userStore.currentSearchedClientListPage >= pageCount }">
-										<a class="page-link" href="#" @click.prevent="nextPage">Next &raquo;</a>
+										<a class="page-link" href="#" @click.prevent="nextPage">Next</a>
 									</li>
 								</ul>
 								<!-- End Table -->
@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { scrollToTop, delay, formatDate, showToast, tooltipConfig } from '@/controller';
+import { scrollToTop, delay, formatDate, showToast, tooltipConfig, limitText } from '@/controller';
 import { useUserStore } from '@/store/store';
 import axios from 'axios';
 
@@ -146,10 +146,11 @@ export default {
 			const toastAlert = showToast('Loading data', 'alert-info', true);
 			toastAlert.show();
 
-			axios.get('http://ns.proweaver.host/nsorchestra/api/Clientcontroller/getallClients', { params: { limit: this.pageSize, offset } }).then((res) => {
+			axios.get('http://ns.proweaver.host/nsorchestra/api/Clientcontroller/getall_clients', { params: { limit: this.pageSize, offset } }).then((res) => {
 				if (res.data == null) return;
 				this.clientList = res.data.result.data;
 				this.clientList.forEach(client => {
+					client.company = limitText(client.company);
 					client.date_added = formatDate(client.date_added);
 				});
 				this.userStore.setClientList(this.clientList);
@@ -163,28 +164,28 @@ export default {
 			if (this.searchCriteria == null || this.searchCriteria == '') return;
 
 			let offset;
-			if (e !== undefined && e.type === 'click') offset = 0;
+			if ((e !== undefined && e.type === 'click') || (e !== undefined && e.type === 'keyup')) offset = 0;
 			else offset = (this.$userStore.currentSearchedClientListPage - 1) * this.pageSize;
 
 			let toastAlert = showToast('Searching client', 'alert-info', true).show();
 
-			axios.get('http://ns.proweaver.host/nsorchestra/api/Clientcontroller/getallClients', { params: { limit: this.pageSize, offset, criteria: this.searchCriteria } }).then((res) => {
+			axios.get('http://ns.proweaver.host/nsorchestra/api/Clientcontroller/getall_clients', { params: { limit: this.pageSize, offset, criteria: this.searchCriteria } }).then((res) => {
 				if (res.data.result == null) {
 					toastAlert.remove();
-					throw new Error(res.data.msg);
+					throw new Error('No client found in the database!');
 				}
-
 				this.clientList = res.data.result.data;
 				this.clientList.forEach(client => {
+					client.company = limitText(client.company);
 					client.date_added = formatDate(client.date_added);
 				});
-
 				this.userStore.setClientList(this.clientList);
 				this.userStore.setTotalClientSearch(res.data.result.total);
-				if (e !== undefined && e.type === 'click') this.userStore.setSearchedClient(this.searchCriteria);
-				if (e !== undefined && e.type === 'click') this.userStore.currentSearchedClientListPage = 1;
+				if ((e !== undefined && e.type === 'click') || (e !== undefined && e.type === 'keyup')) this.userStore.setSearchedClient(this.searchCriteria);
+				if ((e !== undefined && e.type === 'click') || (e !== undefined && e.type === 'keyup')) this.userStore.currentSearchedClientListPage = 1;
 			})
 			.then(() => toastAlert.hide())
+			.then(() => scrollToTop())
 			.then(() => this.tooltipConfig())
 			.catch((err) => {
 				toastAlert = showToast(err.message, 'alert-danger').show();
@@ -198,8 +199,8 @@ export default {
 				this.$userStore.currentSearchedClientListPage = page;
 				this.searchClient();
 			} else {
-				this.$userStore.currentSearchedClientListPage = page;
 				this.searchCriteria = this.$userStore.searchedClient;
+				this.$userStore.currentSearchedClientListPage = page;
 				this.searchClient();
 			}
 		},
@@ -216,8 +217,8 @@ export default {
 				}
 			} else {
 				if (this.$userStore.currentSearchedClientListPage < this.pageCount) {
-					this.$userStore.currentSearchedClientListPage++;
 					this.searchCriteria = this.$userStore.searchedClient;
+					this.$userStore.currentSearchedClientListPage++;
 					this.searchClient();
 				}
 			}
@@ -235,8 +236,8 @@ export default {
 				}
 			} else {
 				if (this.$userStore.currentSearchedClientListPage > 1) {
-					this.$userStore.currentSearchedClientListPage--;
 					this.searchCriteria = this.$userStore.searchedClient;
+					this.$userStore.currentSearchedClientListPage--;
 					this.searchClient();
 				}
 			}
@@ -245,10 +246,18 @@ export default {
 			const toastAlert = showToast('Loading data', 'alert-info', true);
 			toastAlert.show();
 
+			axios.post(`http://ns.proweaver.host/nsorchestra/api/Clientcontroller/view_client?acc_id=${company.acc_id}`).then((res) => {
+				if (res.data == null) return;
+				delay(0)
+					.then(() => this.userStore.viewClientInfo(res.data.result))
+					.then(() => this.$router.push('/clients/info'));
+			}).then(() => toastAlert.hide());
+		},
+		resetSearch() {
 			delay(0)
-				.then(() => this.userStore.viewClientInfo(company))
-				.then(() => this.$router.push('/clients/info'))
-				.then(() => toastAlert.hide());
+				.then(() =>this.getClients())
+				.then(() => this.$userStore.searchedClient = null)
+				.then(() => this.searchCriteria = null);
 		}
 	},
 	computed: {
@@ -257,7 +266,8 @@ export default {
 			else return Math.ceil(this.$userStore.totalClients / this.pageSize);
 		},
 		displayedPages() {
-			const maxDisplayed = 6;
+			const maxDisplayed = 4;
+			
 			if (this.$userStore.searchedClient !== null) {
 				let start = Math.max(1, this.$userStore.currentSearchedClientListPage - Math.floor(maxDisplayed / 2));
 				let end = Math.min(this.pageCount, start + maxDisplayed - 1);
@@ -279,3 +289,16 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+.reset-btn {
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--bs-primary);
+}
+
+.reset-btn:hover {
+	color: var(--bs-secondary);
+	cursor: pointer;
+}
+</style>
