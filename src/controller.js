@@ -252,9 +252,9 @@ function limitText(text) {
 };
 
 function isEmpty(value) {
-    if (Array.isArray(value)) {
+    if (Array.isArray(value) && value !== null) {
         return value.length === 0;
-    } else if (typeof value === 'object') {
+    } else if (typeof value === 'object' && value !== null) {
         return Object.keys(value).length === 0;
     } else {
         return value === null || value === undefined || value.trim() === '' || value.startsWith('-') || value.startsWith('=') || value.startsWith('.');

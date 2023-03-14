@@ -2,7 +2,7 @@
 
 :root {
 	--color-background: #fff;
-	--color-background-main: #eee;
+	--color-background-main: #fff4f5;
 	--text-color: #585858;
 	--text-color-soft: #2f3336;
 	--text-color-link: #7f5acb;
@@ -102,5 +102,12 @@ main {
 
 	.footer {
 		flex-flow: column wrap;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.nav.nav-tabs.nav-tabs-bordered li {
+		width: 100%;
+		margin-bottom: 0;
 	}
 }

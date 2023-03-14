@@ -171,7 +171,7 @@
                                                                     <span class="mt-2 text-primary">{{ user.user_alias_name }}</span>
                                                                 </div>
                                                             </div>
-                                                            <span class="w-auto">{{ item.message }}</span>
+                                                            <span class="text-pre-line w-auto">{{ item.message }}</span>
                                                         </div>
                                                     </div>
                                                 </div>

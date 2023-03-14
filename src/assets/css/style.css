@@ -13,12 +13,13 @@
 }
 
 a {
-  color: #dd4b39;
+  font-weight: 700;
+  color: var(--bs-secondary);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--bs-primary);
+  color: var(--bs-pink);
   text-decoration: none;
 }
 
@@ -1050,7 +1051,6 @@ h6 {
 }
 
 .default-tab .tab-pane .row {
-  margin-bottom: 20px;
   font-size: 15px;
 }
 
@@ -1266,4 +1266,12 @@ h6 {
 
 .list-group-item {
   color: var(--text-color);
+}
+
+/*--------------------------------------------------------------
+# Text Wrapping
+--------------------------------------------------------------*/
+
+.text-pre-line {
+  white-space: pre-line;
 }

@@ -82,10 +82,10 @@
 
                                 <div class="tab-content pt-2">
 
-                                    <div class="tab-pane fade profile-overview show active" id="profile-overview">
+                                    <div class="tab-pane fade px-3 profile-overview show active" id="profile-overview">
                                         <h5 class="card-title">Profile Details</h5>
 
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row border-bottom mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-team-fill me-3 fs-5"></i> Team Name
                                             </div>
@@ -93,7 +93,7 @@
                                             <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.team_name }}</div>
                                         </div>
 
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row border-bottom mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-mail-fill me-3 fs-5"></i> Email
                                             </div>
@@ -101,7 +101,7 @@
                                             <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_email }}</div>
                                         </div>
 
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row border-bottom mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-contacts-book-2-fill me-3 fs-5"></i> Contact Number
                                             </div>
@@ -109,7 +109,7 @@
                                             <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_phone }}</div>
                                         </div>
 
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row border-bottom mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-mail-fill me-3 fs-5"></i> Zimbra Email
                                             </div>
@@ -117,7 +117,7 @@
                                             <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_zimbra_email }}</div>
                                         </div>
 
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row border-bottom mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-google-fill me-3 fs-5"></i> Gmail Email
                                             </div>
@@ -125,7 +125,7 @@
                                             <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_gmail_email }}</div>
                                         </div>
 
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row border-bottom mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-skype-fill me-3 fs-5"></i> Skype Name
                                             </div>
@@ -133,7 +133,7 @@
                                             <div class="col-lg-9 col-md-8" v-else>{{ this.$userStore.user.user_skype_name }}</div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-3 pb-3">
                                             <div class="col-lg-3 col-md-4 label d-inline-flex align-items-center">
                                                 <i class="ri-mail-fill me-3 fs-5"></i> Web Mail
                                             </div>
@@ -142,15 +142,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane fade profile-edit" id="profile-edit">
+                                    <div class="tab-pane fade px-3 profile-edit" id="profile-edit">
                                         <h5 class="card-title">Profile Edit</h5>
 
                                         <!-- Profile Edit Form -->
                                         <div>
                                             <div class="row mb-3">
                                                 <label for="profileImage"
-                                                    class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                                <div class="col-md-8 col-lg-9 d-flex align-items-center">
+                                                    class="col-md-3 col-form-label">Profile Image</label>
+                                                <div class="col-md-9 d-flex align-items-center">
                                                     <img :src="`https://office.orchestra.tools/` + this.$userStore.user.user_photo"
                                                         alt="Profile"
                                                         class="rounded-circle p-1 border border-3 border-primary me-3"
@@ -171,9 +171,9 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full
+                                                <label for="fullName" class="col-md-3 col-form-label">Full
                                                     Name</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="fullName" type="text" class="form-control"
                                                         id="full_name"
                                                         :placeholder="this.$userStore.user.user_full_name" disabled>
@@ -182,8 +182,8 @@
 
                                             <div class="row mb-3">
                                                 <label for="fullName"
-                                                    class="col-md-4 col-lg-3 col-form-label">A.K.A</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                    class="col-md-3 col-form-label">A.K.A</label>
+                                                <div class="col-md-9">
                                                     <input name="fullName" type="text" class="form-control"
                                                         id="alias_name"
                                                         :placeholder="this.$userStore.user.user_alias_name" disabled>
@@ -191,9 +191,9 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="about" class="col-md-4 col-lg-3 col-form-label">Email
+                                                <label for="about" class="col-md-3 col-form-label">Email
                                                     Address</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="fullName" type="text" class="form-control"
                                                         id="emailer_email"
                                                         :placeholder="this.$userStore.user.user_email" disabled>
@@ -201,9 +201,9 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="company" class="col-md-4 col-lg-3 col-form-label">Contact
+                                                <label for="company" class="col-md-3 col-form-label">Contact
                                                     Number</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="company" type="text" class="form-control"
                                                         id="contact_number" v-model="user.contact_number"
                                                         :placeholder="this.$userStore.user.user_phone">
@@ -212,17 +212,17 @@
 
                                             <div class="row mb-3">
                                                 <label for="company"
-                                                    class="col-md-4 col-lg-3 col-form-label">Password</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                    class="col-md-3 col-form-label">Password</label>
+                                                <div class="col-md-9">
                                                     <input name="company" type="password" class="form-control"
                                                         id="password" v-model="user.password" placeholder="********">
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="company" class="col-md-4 col-lg-3 col-form-label">Confirm
+                                                <label for="company" class="col-md-3 col-form-label">Confirm
                                                     Password</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="company" type="password" class="form-control"
                                                         id="confirm_password" v-model="user.confirm_password"
                                                         placeholder="********">
@@ -230,9 +230,9 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Country" class="col-md-4 col-lg-3 col-form-label">Zimbra
+                                                <label for="Country" class="col-md-3 col-form-label">Zimbra
                                                     Email</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="company" type="text" class="form-control"
                                                         id="zimbra_email" v-model="user.zimbra_email"
                                                         :placeholder="this.$userStore.user.user_zimbra_email">
@@ -240,9 +240,9 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Address" class="col-md-4 col-lg-3 col-form-label">Gmail
+                                                <label for="Address" class="col-md-3 col-form-label">Gmail
                                                     Email</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="company" type="text" class="form-control"
                                                         id="zimbra_email" v-model="user.gmail_email"
                                                         :placeholder="this.$userStore.user.user_gmail_email">
@@ -250,9 +250,9 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Skype
+                                                <label for="Phone" class="col-md-3 col-form-label">Skype
                                                     Name</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="company" type="text" class="form-control"
                                                         id="zimbra_email" v-model="user.skype_name"
                                                         :placeholder="this.$userStore.user.user_skype_name">
@@ -260,16 +260,16 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Email" class="col-md-4 col-lg-3 col-form-label">Emailer
+                                                <label for="Email" class="col-md-3 col-form-label">Emailer
                                                     Email</label>
-                                                <div class="col-md-8 col-lg-9">
+                                                <div class="col-md-9">
                                                     <input name="email" type="email" class="form-control" id="Email"
                                                         v-model="user.emailer_email"
                                                         :placeholder="this.$userStore.user.user_emailer_email">
                                                 </div>
                                             </div>
 
-                                            <div class="text-end">
+                                            <div class="text-end mb-3 pb-3">
                                                 <button type="submit" class="btn btn-primary" @click="updateProfile"
                                                     :disabled="this.loading">
                                                     <span v-if="!this.loading">Save Changes</span>
@@ -337,7 +337,7 @@
                                                                     <span class="mt-2 text-primary">{{ user.user_alias_name }}</span>
                                                                 </div>
                                                             </div>
-                                                            <span class="w-auto">{{ item.message }}</span>
+                                                            <span class="text-pre-line w-auto">{{ item.message }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
